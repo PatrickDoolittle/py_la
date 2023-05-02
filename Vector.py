@@ -23,7 +23,7 @@ class Vector:
         return Vector(product)
             
     def add(self, operand: Vector):
-        if not isinstance(operand, Vector):
+        if not isinstance(operand, 'Vector'):
             raise TypeError("operand is not a vector")
             
         
@@ -44,7 +44,3 @@ class Vector:
         for i in range(0,len(self)):
             mod += self.elements[i]**2
         return math.sqrt(mod)
-            
-        
-    
-    
