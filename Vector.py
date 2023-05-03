@@ -2,12 +2,10 @@ from typing import List
 import math
 
 class Vector:
-    def __init__(self, elements: List[int]):
+    def __init__(self, elements: List[float]):
         if not isinstance(elements, list):
             raise TypeError("elements must be a list")
-        if not all(isinstance(x,int) for x in elements):
-            raise TypeError("elements must be a list of integers")
-        self.elements = elements
+        self.elements = [float(x) for x in elements]
         
     def __len__(self):
         return len(self.elements)
@@ -20,7 +18,7 @@ class Vector:
         return self.elements[index]
     
     def scale(self, scalar):
-        product = self.elements
+        product = self.elements.copy()
         for i in range(0,len(product)):
             product[i] = product[i] * scalar
         return Vector(product)
@@ -38,7 +36,7 @@ class Vector:
         if len(self) != len(operand):
             raise ValueError("Vectors of mismatched size")
 
-        summand = self.elements
+        summand = self.elements.copy()
         for i in range(0, len(self)):
             summand[i] += operand[i]
         return Vector(summand)
@@ -51,7 +49,7 @@ class Vector:
         sum = 0
         for i in range(0,len(self)):
             sum += (self[i] * operand[i])
-            print(str(self[i]) + ' * ' + str(operand[i]) + ' = ' + str(sum) )
+            #print(str(self[i]) + ' * ' + str(operand[i]) + ' = ' + str(sum) )
         return sum
 
     def cross(self, operand: 'Vector'):
@@ -80,3 +78,21 @@ class Vector:
             return True 
         else:
             return False
+
+    def scalarProjection(self, operand:'Vector'):
+        if not isinstance(operand, Vector):
+            raise TypeError("Operand is not a vector.")
+        if len(self) != len(operand):
+            raise ValueError("Vectors of mismatched size")
+
+        return self.dot(operand) / operand.modulus()   
+
+    def vectorProjection(self, operand:'Vector'): 
+        if not isinstance(operand, Vector):
+            raise TypeError("Operand is not a vector.")
+        if len(self) != len(operand):
+            raise ValueError("Vectors of mismatched size")
+
+        operand_hat = operand.scale(1 / operand.modulus() )
+        return operand_hat.scale( self.scalarProjection(operand))
+        
