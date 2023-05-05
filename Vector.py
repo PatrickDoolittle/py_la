@@ -9,14 +9,15 @@ and indexed v[0] = v_x
 from typing import List
 import math
 
+
 class Vector:
     def __init__(self, elements: List[float]):
         if not isinstance(elements, list):
             raise TypeError("elements must be a list")
         try:
             self.elements = [float(x) for x in elements]
-        except ValueError as e:
-            raise ValueError("Elements of list must be numerical")
+        except TypeError as e:
+            raise TypeError("Elements of list must be numerical")
         
     def __len__(self):
         return len(self.elements)
@@ -29,16 +30,16 @@ class Vector:
         summand = [self[i] + operand[i] for i in range(len(self))]
         return Vector(summand)
 
-    def __mul__(self, scalar):
-        try:
-            data = [x * scalar for x in self.elements]
-        except ValueError:
-            raise ValueError("Scalar must be a numerical value")
-        return Vector(data)
+    def __mul__(self, operand):
+        # I need to rewrite this method such that if a vector is multiplied by a matrix, the linear transformation occurs.
+        if isinstance(operand, float) or isinstance(operand, int):
+            return self.scale(operand)
+        elif isinstance(operand, Vector):
+            raise TypeError("Vector multiplication is not defined.")
 
     def __str__(self):
         mod = self.modulus()
-        return f"Vector in {len(self)} space: {self.elements}\nModulus: {mod:.3f}"
+        return str(self.elements)
 
     def __getitem__(self, index):
         return self.elements[index]

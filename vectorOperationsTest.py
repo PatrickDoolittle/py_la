@@ -1,4 +1,5 @@
 from Vector import Vector
+from Matrix import Matrix
 from VectorOperations import *
 '''
 Unit Test of the suite of functions for vector operations VectorOperations.py
@@ -30,3 +31,5 @@ print(orthogonal(u,v))
 v = Vector([5,1,0])
 u = Vector([1,-5,0])
 print(orthogonal(v,u))
+
+

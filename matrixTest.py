@@ -21,3 +21,13 @@ print("pass\n")
 print("Index test")
 print(str(A[1][1]))
 
+print(str(A))
+print("Transpose test")
+B = A.transpose()
+print(str(B))
+
+print("Multiplication test")
+print(str(A) + '\n')
+print(str(v1))
+print(str(A * v1))
+
