@@ -13,15 +13,17 @@ def dot(a:'Vector', b: 'Vector'):
 def cross(a:'Vector', b: 'Vector'):
     if not isinstance(b, Vector) or not isinstance(a, Vector):
         raise TypeError("Operand is not a vector.")
-    if not len(b) <= 3 & len(a) <= 3:
-        raise IndexError("Vectors need be size 3 or less")
+    if not len(b) <= 3 and len(a) <= 3:
+        raise ValueError("Vectors need be size 3 or less")
+    if not len(b) > 1 and len(a) > 1 :
+        raise ValueError("Vectors need to be greater than size 1")
     if len(a) != len(b):
         raise ValueError("Vectors of mismatched size")
     if len(a) == 2:
         new_data = [0,0,  a[0] * b[1] - a[1] * b[0]]
         return Vector(new_data)
     else:
-        new_data = [(a[1] * b[2] - a[2] * b[1]), (a[2] * b[0] - a[0] * b[1]), (a[0] * b[1] - a[1] * b[0]) ]
+        new_data = [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0] ]
         return Vector(new_data)
     
 def scalarProjection(a:'Vector', b:'Vector'):
@@ -29,15 +31,21 @@ def scalarProjection(a:'Vector', b:'Vector'):
         raise TypeError("Operand is not a vector.")
     if len(a) != len(b):
         raise ValueError("Vectors of mismatched size")
-    return a.dot(b) / b.modulus()   
+    return dot(a,b)/ b.modulus() 
 
 def vectorProjection(a:'Vector', b:'Vector'): 
     if not isinstance(b, Vector) or not isinstance(a, Vector):
         raise TypeError("Operand is not a vector.")
     if len(a) != len(b):
         raise ValueError("Vectors of mismatched size")
-    b_hat = b.scale(1 / b.modulus() )
-    return b_hat.scale( a.scalarProjection(b))
+    scaling_factor = dot(a,b) / b.modulus()**2
+    projection_elements = [b[i] for i in range(len(b))]
+    projection = Vector(projection_elements)
+    projection.scale(scaling_factor)
+    return projection
+
+
+
         
 def orthogonal(a:'Vector', b:'Vector'):
     if not isinstance(a, Vector) or not isinstance(b,Vector):
