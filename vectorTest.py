@@ -48,5 +48,5 @@ print(v_3[2])
 
 # scale test
 print("Scale test, should be [4,6,8]")
-v_3.scale(2)
+v_3 = v_3.scale(2)
 print(str(v_3))

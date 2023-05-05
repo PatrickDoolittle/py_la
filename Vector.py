@@ -30,9 +30,10 @@ class Vector:
         return self.elements[index]
     
     def scale(self, scalar):
-        product = self.elements
+        product = self.elements.copy()
         for i in range(0,len(product)):
             product[i] = product[i] * scalar
+        return(Vector(product))
             
     def modulus(self):
         mod = 0
