@@ -39,9 +39,9 @@ def vectorProjection(a:'Vector', b:'Vector'):
     if len(a) != len(b):
         raise ValueError("Vectors of mismatched size")
     scaling_factor = dot(a,b) / b.modulus()**2
-    projection_elements = [b[i] for i in range(len(b))]
+    projection_elements = b.elements.copy()
     projection = Vector(projection_elements)
-    projection.scale(scaling_factor)
+    projection = projection.scale(scaling_factor)
     return projection
 
 
