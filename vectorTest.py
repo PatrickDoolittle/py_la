@@ -1,5 +1,4 @@
 from Vector import Vector
-from VectorOperations import *
 ''' This is a unit test to verify that the Vector module is working correctly.
 
 Vector methods:
@@ -11,12 +10,6 @@ __add__: Allows you to add two vectors by using the '+' symbol: "v3 = v1 + v2" s
 scale: Takes a numerical value and multiplies each component of the vector by this value (maybe make an inverse flag?)
 modulus: Finds the size of the vector by taking the square root of the sum of the squares of the components.
 
-Vector functions:
-dot(v,u): Returns the dot product of two vectors
-cross(v,u): Returns the cross product of two vectors in 3d space. Order matters (cross(v,u) != cross(u,v))
-scalarProjection(v,u): Returns the scalar projection of vector v onto u. 
-vectorProjection(v,u): Returns a vector in with the magnitude and direction of the projection of v onto u.
-orthogonal(v,u): Checks if two vectors are orthogonal (their dot product is zero)...
 ''' 
 
 #init test
@@ -43,3 +36,17 @@ v_1 = Vector([1,2,3])
 print("Testing Vector readout")
 print(str(v_1))
 
+#add test
+print("Vector addition test, should be [1,1,1] + [1,2,3] = [2,3,4]")
+v_2 = Vector([1,1,1])
+v_3 = v_1 + v_2
+print(str(v_3))
+
+#__getitem__ test
+print("Index test: should be 4")
+print(v_3[2])
+
+# scale test
+print("Scale test, should be [4,6,8]")
+v_3.scale(2)
+print(str(v_3))

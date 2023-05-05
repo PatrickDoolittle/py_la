@@ -1,3 +1,4 @@
+from Vector import Vector
 
 def dot(a:'Vector', b: 'Vector'):
     if not isinstance(b, Vector) or not isinstance(a, Vector):
@@ -6,7 +7,7 @@ def dot(a:'Vector', b: 'Vector'):
         raise ValueError("Vectors of mismatched size.")
     sum = 0
     for i in range(0,len(a)):
-        sum  (a[i] * b[i])
+        sum += (a[i] * b[i])
     return sum
 
 def cross(a:'Vector', b: 'Vector'):

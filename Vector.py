@@ -14,7 +14,7 @@ class Vector:
         return len(self.elements)
     
     def __add__(self, operand:"Vector"):
-        if not isinstance(other, Vector):
+        if not isinstance(operand, Vector):
             raise TypeError("Operand is not a vector.")
         if len(self) != len(operand):
             raise ValueError("Vectors of mismatched size")
@@ -24,7 +24,7 @@ class Vector:
 
     def __str__(self):
         mod = self.modulus()
-        return 'Vector: ' + str(self.elements) +  ' Modulus: ' + str(mod)
+        return f"Vector in {len(self)} space: {self.elements}\nModulus: {mod:.3f}"
 
     def __getitem__(self, index):
         return self.elements[index]
