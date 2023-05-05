@@ -29,6 +29,12 @@ class Vector:
         summand = [self[i] + operand[i] for i in range(len(self))]
         return Vector(summand)
 
+    def __mul__(self, scalar):
+        try:
+            data = [x * scalar for x in self.elements]
+        except ValueError:
+            raise ValueError("Scalar must be a numerical value")
+        return Vector(data)
 
     def __str__(self):
         mod = self.modulus()
@@ -38,11 +44,13 @@ class Vector:
         return self.elements[index]
     
     def scale(self, scalar):
-        product = self.elements.copy()
-        for i in range(0,len(product)):
-            product[i] = product[i] * scalar
-        return(Vector(product))
-            
+        try:
+            data = [x * scalar for x in self.elements]
+        except ValueError:
+            raise ValueError("Scalar must be a numerical value")
+        return Vector(data)        
+        
+
     def modulus(self):
         mod = 0
         for i in range(0,len(self)):
