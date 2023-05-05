@@ -12,18 +12,23 @@ orthogonal(v,u): Checks if two vectors are orthogonal (their dot product is zero
 
 '''
 
-print("Dot Product Test, should be [1,2,3] * [1,1,1] = 6")
+print("Dot Product Test, should be [1,2,3] * [1,1,1] = 6.")
 v = Vector([1,2,3])
 u = Vector([1,1,1])
 print(dot(u,v))
 
 
-print("Cross Product Test: should be [-1,2,-1]")
+print("Cross Product Test: should be [-1,2,-1].")
 print(cross(v,u))
 
 print(str(v))
 print(str(u))
-print("Scalar Projection Test: should be 3.46")
+print("Scalar Projection Test: should be 3.46.")
 print(f" {scalarProjection(v,u):.2f}")
-print("Vector Projection Test: should be [2,2,2]")
+print("Vector Projection Test: should be [2,2,2].")
 print(str(vectorProjection(v,u)))
+print("Orthogonality check test, should be False and then True.")
+print(orthogonal(u,v))
+v = Vector([5,1,0])
+u = Vector([1,-5,0])
+print(orthogonal(v,u))

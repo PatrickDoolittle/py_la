@@ -1,3 +1,11 @@
+'''
+Vector Object, 
+elements are a list of floats
+can be added 'w = u + v'
+and indexed v[0] = v_x 
+
+'''
+
 from typing import List
 import math
 

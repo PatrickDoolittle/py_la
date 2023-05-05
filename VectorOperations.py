@@ -53,7 +53,7 @@ def orthogonal(a:'Vector', b:'Vector'):
     if len(a) != len(b):
         raise ValueError("Vectors of mismatched size")
 
-    dp = a.dot(b)
+    dp = dot(a,b)
     if dp == 0:
         return True 
     else:

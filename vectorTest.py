@@ -14,7 +14,7 @@ modulus: Finds the size of the vector by taking the square root of the sum of th
 
 #init test
 print("init test")
-print("Testing for list format")
+print("Testing for list format.")
 try: 
     v = Vector(5)
 except TypeError as e:
@@ -22,7 +22,7 @@ except TypeError as e:
 except Exception as e:
     print("fail")
 
-print("Checking elements are numerical")
+print("Checking elements are numerical.")
 
 try:
     v = Vector(['a','b','c'])
@@ -33,20 +33,20 @@ except Exception as e:
 
 #str test
 v_1 = Vector([1,2,3])
-print("Testing Vector readout")
+print("Testing Vector readout.")
 print(str(v_1))
 
 #add test
-print("Vector addition test, should be [1,1,1] + [1,2,3] = [2,3,4]")
+print("Vector addition test, should be [1,1,1] + [1,2,3] = [2,3,4].")
 v_2 = Vector([1,1,1])
 v_3 = v_1 + v_2
 print(str(v_3))
 
 #__getitem__ test
-print("Index test: should be 4")
+print("Index test: should be 4.")
 print(v_3[2])
 
 # scale test
-print("Scale test, should be [4,6,8]")
+print("Scale test, should be [4,6,8].")
 v_3 = v_3.scale(2)
 print(str(v_3))
