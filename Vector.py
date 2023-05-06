@@ -49,7 +49,13 @@ class Vector:
             data = [x * scalar for x in self.elements]
         except ValueError:
             raise ValueError("Scalar must be a numerical value")
-        return Vector(data)        
+        return Vector(data)
+
+    def unitize(self):
+        #Returns a unit vector in the direction of the vector
+        # u = v/|v|
+        new_vector = self.scale(1/self.modulus())
+        return new_vector        
         
 
     def modulus(self):

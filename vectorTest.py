@@ -50,3 +50,11 @@ print(v_3[2])
 print("Scale test, should be [4,6,8].")
 v_3 = v_3.scale(2)
 print(str(v_3))
+
+# Unitize test
+print("Unitize test, should be [.37,.55,.74].")
+print(str(v_3))
+print(str(v_3.modulus()))
+v_3 = v_3.unitize()
+print(str(v_3))
+print(str(v_3.modulus()))
