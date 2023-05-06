@@ -3,8 +3,8 @@ Vector Object,
 elements are a list of floats
 can be added 'w = u + v'
 and indexed v[0] = v_x 
-
 '''
+
 
 from typing import List
 import math
@@ -29,9 +29,16 @@ class Vector:
             raise ValueError("Vectors of mismatched size")
         summand = [self[i] + operand[i] for i in range(len(self))]
         return Vector(summand)
+    
+    def __sub__(self, operand:"Vector"):
+        if not isinstance(operand, Vector):
+            raise TypeError("Operand is not a vector.")
+        if len(self) != len(operand):
+            raise ValueError("Vectors of mismatched size")
+        difference = [self[i] - operand[i] for i in range(len(self))]
+        return Vector(difference)
 
     def __mul__(self, operand):
-        # I need to rewrite this method such that if a vector is multiplied by a matrix, the linear transformation occurs.
         if isinstance(operand, float) or isinstance(operand, int):
             return self.scale(operand)
         elif isinstance(operand, Vector):
