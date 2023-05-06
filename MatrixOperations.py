@@ -19,14 +19,31 @@ def gramSchmidt(A: Matrix):
             new_hat = new_hat - vectorProjection(A[i], hat_vectors[j])
         hat_vectors.append(new_hat.unitize())
 
-    return Matrix(hat_vectors)
+    new_matrix = Matrix(hat_vectors)
+    for i in range(len(new_matrix)):
+        for j in range(i+1,len(new_matrix)):
+            if i != j:
+                if not orthogonal(new_matrix[i], new_matrix[j]):
+                    raise ValueError("Gram schmidt failed to produce orthogonal vectors.")
+
+
+    return new_matrix
 
 '''
-Write a unit test for the gramSchmidt function
+Check gramschmidt process fails when column vectors are not linearly independent
 '''
-print("Testing gramSchmidt function creates a matrix with orthonormal columns using a 4x4 matrix whose columns are not linearly independent.")
+A = Matrix([Vector([1,1,0]), Vector([1,0,1]), Vector([1,0,1])])
+print("A: " + str(A))
+try:
+    B = gramSchmidt(A)
+except ValueError as e:
+    print("Pass")
 
-A = Matrix([Vector([1,1,0,0]), Vector([1,0,1,0]), Vector([1,0,0,1]), Vector([0,1,1,1])])
+'''
+Check gramschmidt process creates orthonormal basis set if column vectors are linearly independent of a 4x4 matrix
+'''
+
+A = Matrix([Vector([5,0,0,0]), Vector([0,3,0,0]), Vector([0,0,7,0]), Vector([0,0,0,1])])
 print("A: " + str(A))
 B = gramSchmidt(A)
 print("B: " + str(B))
@@ -41,3 +58,4 @@ for i in range(len(B)):
                 print(i,j)
                 print(orthogonal(B[i], B[j]))
                 
+
