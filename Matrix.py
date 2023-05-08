@@ -39,6 +39,20 @@ class Matrix:
         print("__mul__ returning vector: " + str(new_vector))
         return Vector(new_vector)
     
+    def __matmul__(self, operand:"Matrix"):
+        if not isinstance(operand, Matrix):
+            raise TypeError("Operand must be a matrix")
+        if len(self) != len(operand[0]):
+            raise ValueError("Columns of left matrix must equal rows of right matrix")
+        new_columns = []
+        for i in range(len(operand)):
+            new_column = []
+            for j in range(len(self[0])):
+                new_column.append(dot(operand[i], self.transpose()[j]))
+            new_columns.append(Vector(new_column))
+        return Matrix(new_columns)
+    
+
 
     def transpose(self):
         new_vectors = []

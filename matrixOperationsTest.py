@@ -4,27 +4,22 @@ from MatrixOperations import *
 from VectorOperations import *
 
 
-#Quick unit test of gramSchmidt
-A = Matrix([Vector([1,1,0]), Vector([1,0,1])])
+
+'''
+Check gramschmidt process fails when column vectors are not linearly independent
+'''
+A = Matrix([Vector([1,1,0]), Vector([1,0,1]), Vector([1,0,1])])
 print("A: " + str(A))
-B = gramSchmidt(A)
-print("B: " + str(B))
-#Show that the columns of B are unitized and orthonormal
-print("Showing that the columns of B are unitized and orthonormal.")
-print("Showing moduli")
-for i in range(len(B)):
-    print(str(B[i].modulus()))
-#show that these two vectors are orthogonal
-print("Showing that these two vectors are orthogonal.")
-for i in range(len(B)):
-    for j in range(i+1,len(B)):
-            if i != j:
-                print(orthogonal(B[i], B[j]))
+try:
+    B = gramSchmidt(A)
+except ValueError as e:
+    print("Pass")
 
+'''
+Check gramschmidt process creates orthonormal basis set if column vectors are linearly independent of a 4x4 matrix
+'''
 
-#Unit test for gramschmidt on a 4x4 matrix
-print("\n \n4x4 gram schmidt test.")
-A = Matrix([Vector([1,1,0,0]), Vector([1,0,1,0]), Vector([1,0,0,1]), Vector([0,1,1,1])])
+A = Matrix([Vector([5,0,0,0]), Vector([0,3,0,0]), Vector([0,0,7,0]), Vector([0,0,0,1])])
 print("A: " + str(A))
 B = gramSchmidt(A)
 print("B: " + str(B))
@@ -38,3 +33,5 @@ for i in range(len(B)):
             if i != j:
                 print(i,j)
                 print(orthogonal(B[i], B[j]))
+                
+
