@@ -35,6 +35,18 @@ class Matrix:
         if isinstance(indices, int):
             return self.vectors[indices]
         
+    def __setitem__(self, indice, value):
+        if isinstance(value, Vector):
+            self.vectors[indice] = value
+        elif not isinstance(value, int) and not isinstance(value, float):
+            raise TypeError("Matrix elements must be numbers")
+        elif not isinstance(indice, int):
+            raise TypeError("Matrix indices must be integers")
+        elif indice >= len(self):
+            raise IndexError("Index out of range")
+        else:
+            self.vectors[indice] = value
+        
     def __str__(self):
         print(f"{len(self[0])}x{len(self)} Matrix: ")
         return "\n".join([str(x) for x in self.vectors])
@@ -113,8 +125,29 @@ class Matrix:
     
 
 # Transforms a matrix into row echelon form
-    def row_echelon(self):  
-        pass
+    def row_echelon(self):
+        row_self = self.transpose()  
+        # Iterate over the columns of the matrix
+        for column in range(len(row_self[0])):
+            # Find the first non-zero entry in the column and save it's row_index
+            pivot_index = None
+            for row in range(len(row_self)):
+                if row_self[row][column] != 0:
+                    pivot_index = row
+                    break
+            # If the pivot index is not the same as the column index, swap the rows
+            if pivot_index != column:
+                row_self = row_self.row_swap(pivot_index, column)
+            # Divide the pivot row by the pivot value
+            row_self[column] = row_self[column].scale(1/row_self[column][column])
+            # Every row whose index is greater than "column" must be subtracted by a multiple of the pivot row
+            # Since the pivot value is 1, this scale i just the value of the pivot column at the row index
+            for row in range(column+1, len(row_self)):
+                row_self[row] = row_self[row] - row_self[column].scale(row_self[row][column])
+            #This column is now done, iterate
+
+
+
                 
 
 '''
