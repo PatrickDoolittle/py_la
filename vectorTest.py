@@ -39,6 +39,17 @@ try:
 except AssertionError:
     raise Exception("Vector equality failed.  Check your code.")
 
+# Vector item assignment test
+print("Vector item assignment test.")
+try:
+    v_1[0] = 5
+    assert v_1 == Vector([5,2,3])
+    print("Passed")
+except AssertionError:
+    raise Exception("Vector item assignment failed.  Check your code.")
+
+v_1 = Vector([1,2,3])
+
 # Vector addition test
 print("Vector addition test.")
 try:
@@ -97,7 +108,7 @@ except AssertionError:
 
 
 # Vector orthogonality test 
-print("Vector orthogonality test.")
+print("Vector orthogonality rejection test.")
 try:
     v_1prime = Vector([1,2,3])
     v_2prime = Vector([1,1,1])
@@ -107,7 +118,7 @@ except AssertionError:
     raise Exception("Vector orthogonality failed.  Check your code.")
 
 
-print("Checking vectors with zero dot product.")
+print("Vector orthonganality confirmation test.")
 try:
     v_1prime = Vector([1,2,3])
     v_2prime = Vector([2,-1,0])

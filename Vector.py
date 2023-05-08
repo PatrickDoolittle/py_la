@@ -60,6 +60,11 @@ class Vector:
     def __getitem__(self, index):
         return self.elements[index]
     
+    def __setitem__(self,index, value):
+        if not isinstance(value, float) and not isinstance(value, int):
+            raise TypeError("Value must be a number")
+        self.elements[index] = value
+    
     def scale(self, scalar):
         try:
             data = [x * scalar for x in self.elements]
