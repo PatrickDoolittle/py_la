@@ -92,6 +92,14 @@ class Matrix:
         for i in range(len(self)):
             new_vectors.append(self[i] * scalar)
         return Matrix(new_vectors)
+
+    def row_swap(self, i, j):
+        #  Returns a new_matrix with the i and jth rows swapped
+        row_self = self.transpose()
+        new_rows = row_self.vectors.copy()
+        new_rows[i], new_rows[j] = new_rows[j], new_rows[i]
+        return Matrix(new_rows).transpose()
+    
     
 
     def transpose(self):
@@ -103,23 +111,33 @@ class Matrix:
             new_vectors.append(Vector(row))
         return Matrix(new_vectors)
     
-    
-    def gramSchmidt(self):
-        '''
-        Returns the gram schmidt orthogonalization of the matrix A
-        '''
-        e_hat = self[0].unitize()
-        hat_vectors  = [e_hat]
-        for i in range(1,len(self)):
-            new_hat = self[i] - vectorProjection(self[i], e_hat)
-            for j in range(1, len(hat_vectors)):
-                new_hat = new_hat - vectorProjection(self[i], hat_vectors[j])
-            hat_vectors.append(new_hat.unitize())
-        new_matrix = Matrix(hat_vectors)
-        print(new_matrix)
-        for i in range(len(new_matrix)):
-            for j in range(i+1,len(new_matrix)):
-                if i != j:
-                    if not orthogonal(new_matrix[i], new_matrix[j]):
-                        raise ValueError("Gram schmidt failed to produce orthogonal vectors.")
-        return new_matrix
+
+# Transforms a matrix into row echelon form
+    def row_echelon(self):  
+        pass
+                
+
+'''
+Need to implement gaussian elimination to find number of linear independent vectors
+before trying GS process
+'''
+
+#    def gramSchmidt(self):
+#        '''
+#        Returns the gram schmidt orthogonalization of the matrix A
+#        '''
+#        e_hat = self[0].unitize()
+#        hat_vectors  = [e_hat]
+#        for i in range(1,len(self)):
+#            new_hat = self[i] - vectorProjection(self[i], e_hat)
+#            for j in range(1, len(hat_vectors)):
+#                new_hat = new_hat - vectorProjection(self[i], hat_vectors[j])
+#            hat_vectors.append(new_hat.unitize())
+#        new_matrix = Matrix(hat_vectors)
+#        print(new_matrix)
+#        for i in range(len(new_matrix)):
+#            for j in range(i+1,len(new_matrix)):
+#                if i != j:
+#                    if not orthogonal(new_matrix[i], new_matrix[j]):
+#                        raise ValueError("Gram schmidt failed to produce orthogonal vectors.")
+#        return new_matrix

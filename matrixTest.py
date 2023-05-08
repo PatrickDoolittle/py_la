@@ -100,12 +100,12 @@ try:
 except AssertionError:
     raise Exception("Matrix transpose failed.  Check your code.")
 
-# Matrix Gram-Schmidt test
-print("Matrix Gram-Schmidt test.")
+# Matrix row swap test  
+print("Matrix row swap test.")
 try:
     m_1 = Matrix([Vector([1,2,3]), Vector([4,5,6]), Vector([7,8,9])])
-    m_2 = m_1.gramSchmidt()
-    assert m_2 == Matrix([Vector([1/math.sqrt(14), 2/math.sqrt(14), 3/math.sqrt(14)]), Vector([2/math.sqrt(21), 1/math.sqrt(21), 0]), Vector([1/math.sqrt(126), -10/math.sqrt(126), 5/math.sqrt(126)])])
+    m_2 = m_1.row_swap(0,1)
+    assert m_2 == Matrix([Vector([2,1,3]), Vector([5,4,6]), Vector([8,7,9])])
     print("Passed")
 except AssertionError:
-    raise Exception("Matrix Gram-Schmidt failed.  Check your code.")
+    raise Exception("Matrix row swap failed.  Check your code.")
