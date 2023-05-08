@@ -1,6 +1,7 @@
 
 '''
-Matrix Object, formed by a list of column vectors, or a list of row vectors (just immediately transpose).
+Matrix Object, formed by a list of column vectors.
+String representation prints the matrix line by line with each line representing a row.
 '''
 
 from Vector import Vector, vectorProjection, dot, orthogonal
@@ -27,6 +28,19 @@ class Matrix:
     def __str__(self):
         print(f"{len(self[0])}x{len(self)} Matrix: ")
         return "\n".join([str(x) for x in self.vectors])
+    
+    def __str__(self):
+        print(f"{len(self[0])}x{len(self)} Matrix: ")
+        row_self = self.transpose()
+        return "\n".join([str(x) for x in row_self.vectors])
+
+    def __add__(self, operand: "Matrix"):
+        if not isinstance(operand, Matrix):
+            raise TypeError("Operand must be a matrix")
+        new_vectors = []
+        for i in range(len(self)):
+            new_vectors.append(self[i] + operand[i])
+
 
     def __mul__(self, operand:"Vector"):
         if not isinstance(operand, Vector):

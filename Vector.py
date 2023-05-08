@@ -1,8 +1,6 @@
 '''
 Vector Object, 
 elements are a list of floats
-can be added 'w = u + v'
-and indexed v[0] = v_x 
 '''
 
 
@@ -14,6 +12,8 @@ class Vector:
     def __init__(self, elements: List[float]):
         if not isinstance(elements, list):
             raise TypeError("elements must be a list")
+        if len(self) == 0:
+            raise ValueError("Vector must have at least one element")
         try:
             self.elements = [float(x) for x in elements]
         except TypeError as e:
@@ -21,6 +21,14 @@ class Vector:
         
     def __len__(self):
         return len(self.elements)
+    
+    def __eq__(self, operand:"Vector"):
+        if not isinstance(operand, Vector):
+            raise TypeError("Operand is not a vector.")
+        if self.elements == operand.elements:
+            return True
+        else:
+            return False
     
     def __add__(self, operand:"Vector"):
         if not isinstance(operand, Vector):
@@ -45,7 +53,6 @@ class Vector:
             raise TypeError("Vector multiplication is not defined.")
 
     def __str__(self):
-        print(f"Vector in R^{len(self)}:")
         return str(self.elements)
 
     def __getitem__(self, index):

@@ -13,11 +13,11 @@ print(str(m_1))
 print("\n \nMatrix column length test.")
 print(str(len(m_1)))
 
-# Matrix addition test
-#print("Matrix addition test.")
-#m_2 = Matrix([Vector([1,2,3]),Vector([4,5,6]),Vector([7,8,9])])
-#m_3 = m_1 + m_2
-#print(str(m_3))
+#Matrix addition test
+print("\n \nMatrix addition test.")
+m_2 = Matrix([Vector([1,2,3]),Vector([4,5,6]),Vector([7,8,9])])
+m_3 = m_1 + m_2
+print(str(m_3))
 
 
 # Matrix Column Index test 

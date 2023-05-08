@@ -1,5 +1,5 @@
 '''
-A Linear Algebra Implementation to solve a simple linear regression problem
+A Linear Algebra Implementation to solve Linear Regression problems
 '''
 
 
