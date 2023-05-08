@@ -3,8 +3,7 @@
 Matrix Object, formed by a list of column vectors, or a list of row vectors (just immediately transpose).
 '''
 
-from Vector import Vector
-from VectorOperations import *
+from Vector import Vector, vectorProjection, dot, orthogonal
 from typing import List
 
 
@@ -26,6 +25,7 @@ class Matrix:
             return self.vectors[indices]
         
     def __str__(self):
+        print(f"{len(self[0])}x{len(self)} Matrix: ")
         return "\n".join([str(x) for x in self.vectors])
 
     def __mul__(self, operand:"Vector"):
@@ -51,8 +51,6 @@ class Matrix:
                 new_column.append(dot(operand[i], self.transpose()[j]))
             new_columns.append(Vector(new_column))
         return Matrix(new_columns)
-    
-
 
     def transpose(self):
         new_vectors = []
@@ -62,3 +60,22 @@ class Matrix:
                 row.append(self[i][j])
             new_vectors.append(Vector(row))
         return Matrix(new_vectors)
+    
+    def gramSchmidt(self):
+        '''
+        Returns the gram schmidt orthogonalization of the matrix A
+        '''
+        e_hat = self[0].unitize()
+        hat_vectors  = [e_hat]
+        for i in range(1,len(self)):
+            new_hat = self[i] - vectorProjection(self[i], e_hat)
+            for j in range(1, len(hat_vectors)):
+                new_hat = new_hat - vectorProjection(self[i], hat_vectors[j])
+            hat_vectors.append(new_hat.unitize())
+        new_matrix = Matrix(hat_vectors)
+        for i in range(len(new_matrix)):
+            for j in range(i+1,len(new_matrix)):
+                if i != j:
+                    if not orthogonal(new_matrix[i], new_matrix[j]):
+                        raise ValueError("Gram schmidt failed to produce orthogonal vectors.")
+        return new_matrix

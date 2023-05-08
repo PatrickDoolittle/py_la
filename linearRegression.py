@@ -3,12 +3,9 @@ A Linear Algebra Implementation to solve a simple linear regression problem
 '''
 
 
-from Vector import Vector
-from VectorOperations import *
+from Vector import Vector, vectorProjection
 from Matrix import Matrix
-from MatrixOperations import *
 from typing import List
-from Visualization import plot_vectors
 
 
 def linear_projection(data: List[tuple]):
@@ -20,14 +17,9 @@ def linear_projection(data: List[tuple]):
     constant_column = [1 for i in range(len(data))]
     constant_vector = Vector(constant_column)
     design_matrix = Matrix([constant_vector, independent_vector])
-    design_hat = gramSchmidt(design_matrix)
+    design_hat = design_matrix.gramSchmidt()
     y_hat = vectorProjection(dependent_vector, design_hat[0]) + vectorProjection(dependent_vector, design_hat[1])
     return y_hat
-
-
-
-
-
 
 
 '''

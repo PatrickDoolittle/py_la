@@ -1,42 +1,49 @@
-from Vector import Vector
-from VectorOperations import *
-from Matrix import Matrix
-
 '''
-Unit test for Matrix module
+Unit Test for checking the Matrix Module Functionality
 '''
-v1 = Vector([1,2,3])
-v2 = Vector([4,5,6])
-v3 = Vector([7,8,9])
-vectors = [v1,v2,v3]
-print("Matrix initialization test")
-try:
-    A = Matrix(vectors)
-except Exception as e:
-    raise Exception("fail")
+from Matrix import *
+from Vector import *
 
-A = Matrix(vectors)
-print("pass\n")
+# Matrix creation test
+print("\n \nMatrix creation test and to-string test.")
+m_1 = Matrix([Vector([1,2,3]),Vector([4,5,6]),Vector([7,8,9])])
+print(str(m_1))
 
-print("Index test")
-print(str(A[1][1]))
+# Matrix length test
+print("\n \nMatrix column length test.")
+print(str(len(m_1)))
 
-print(str(A))
-print("Transpose test")
-B = A.transpose()
-print(str(B))
+# Matrix addition test
+#print("Matrix addition test.")
+#m_2 = Matrix([Vector([1,2,3]),Vector([4,5,6]),Vector([7,8,9])])
+#m_3 = m_1 + m_2
+#print(str(m_3))
 
-print("Multiplication test")
-print(str(A) + '\n')
-print(str(v1))
-print(str(A * v1))
 
-v3 = Vector([2,4,6])
-print("Matrix multiplication test")
-C = Matrix([v1,v2,v3])
-print("left matrix: ")
-print(str(C))
-print("right matrix: ")
-print(str(A))
-print("product: ")
-print(str(C@A))
+# Matrix Column Index test 
+print("\n \nMatrix column index test.")
+print(str(m_1[0]))
+
+# Matrix element index test
+print("\n \nMatrix element index test.")
+print(str(m_1[0][0]))
+
+# Matrix-Matrix multiplication test
+print("\n \nMatrix-Matrix multiplication test.")
+m_2 = Matrix([Vector([1,2,3]),Vector([4,5,6]),Vector([7,8,9])])
+m_3 = m_1 @ m_2
+print(str(m_3))
+
+
+
+# Matrix-Vector multiplication test
+print("\n \nMatrix-Vector multiplication test.")
+v_1 = Vector([1,2,3])
+v_2 = m_1 * v_1
+print(str(v_2))
+
+
+# Matrix transpose test
+print("\n \nMatrix transpose test.")
+m_2 = m_1.transpose()
+print(str(m_2))
