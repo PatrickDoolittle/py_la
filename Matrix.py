@@ -14,12 +14,22 @@ class Matrix:
             raise TypeError("matrix must be formed of a list of vectors")
         if not all(isinstance(x, Vector) for x in vectors):
             raise TypeError("List must be made up of Vectors")
+        if len(vectors) == 0:
+            raise ValueError("Matrix must have at least one vector")
         self.vectors = vectors
         if transpose == True:
             self.vectors = self.transpose().vectors
 
     def __len__(self):
         return len(self.vectors)
+    
+    def __eq__(self, operand:"Matrix"):
+        if not isinstance(operand, Matrix):
+            raise TypeError("Operand must be a matrix")
+        if self.vectors == operand.vectors:
+            return True
+        else:
+            return False
     
     def __getitem__(self,indices):
         if isinstance(indices, int):
@@ -40,17 +50,26 @@ class Matrix:
         new_vectors = []
         for i in range(len(self)):
             new_vectors.append(self[i] + operand[i])
+        return Matrix(new_vectors)
+    
+    def __sub__(self, operand: "Matrix"):
+        if not isinstance(operand, Matrix):
+            raise TypeError("Operand must be a matrix")
+        new_vectors = []
+        for i in range(len(self)):
+            new_vectors.append(self[i] - operand[i])
+        return Matrix(new_vectors)
 
 
     def __mul__(self, operand:"Vector"):
         if not isinstance(operand, Vector):
             raise TypeError("Operand must be a vector")
+        # Columns of matrix must equal rows of vector
         if len(self) != len(operand):
             raise ValueError("Matrix and vector must be of same length")
         new_vector = []
         for i in range(len(self)):
             new_vector.append(dot(self.transpose()[i], operand))
-        print("__mul__ returning vector: " + str(new_vector))
         return Vector(new_vector)
     
     def __matmul__(self, operand:"Matrix"):
@@ -65,6 +84,15 @@ class Matrix:
                 new_column.append(dot(operand[i], self.transpose()[j]))
             new_columns.append(Vector(new_column))
         return Matrix(new_columns)
+    
+    def scale(self, scalar):
+        if not isinstance(scalar, float) and not isinstance(scalar, int):
+            raise TypeError("Scalar must be a number")
+        new_vectors = []
+        for i in range(len(self)):
+            new_vectors.append(self[i] * scalar)
+        return Matrix(new_vectors)
+    
 
     def transpose(self):
         new_vectors = []
@@ -74,6 +102,7 @@ class Matrix:
                 row.append(self[i][j])
             new_vectors.append(Vector(row))
         return Matrix(new_vectors)
+    
     
     def gramSchmidt(self):
         '''

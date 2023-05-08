@@ -12,12 +12,14 @@ class Vector:
     def __init__(self, elements: List[float]):
         if not isinstance(elements, list):
             raise TypeError("elements must be a list")
-        if len(self) == 0:
+        if len(elements) == 0:
             raise ValueError("Vector must have at least one element")
         try:
             self.elements = [float(x) for x in elements]
         except TypeError as e:
             raise TypeError("Elements of list must be numerical")
+        except Exception as e:
+            raise Exception("Fail!")
         
     def __len__(self):
         return len(self.elements)
@@ -25,7 +27,7 @@ class Vector:
     def __eq__(self, operand:"Vector"):
         if not isinstance(operand, Vector):
             raise TypeError("Operand is not a vector.")
-        if self.elements == operand.elements:
+        if all([abs(self[i] - operand[i]) < .0001 for i in range(len(self))]):
             return True
         else:
             return False
@@ -135,7 +137,7 @@ def orthogonal(a:'Vector', b:'Vector'):
         raise ValueError("Vectors of mismatched size")
 
     dp = dot(a,b)
-    if dp == 0:
+    if dp < 0.0000001 and dp > -0.0000001:
         return True 
     else:
         return False
