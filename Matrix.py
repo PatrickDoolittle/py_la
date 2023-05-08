@@ -116,6 +116,7 @@ class Matrix:
                 new_hat = new_hat - vectorProjection(self[i], hat_vectors[j])
             hat_vectors.append(new_hat.unitize())
         new_matrix = Matrix(hat_vectors)
+        print(new_matrix)
         for i in range(len(new_matrix)):
             for j in range(i+1,len(new_matrix)):
                 if i != j:

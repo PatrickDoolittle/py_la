@@ -106,7 +106,6 @@ try:
 except AssertionError:
     raise Exception("Vector orthogonality failed.  Check your code.")
 
-print(dot(v_1prime, v_2prime))
 
 print("Checking vectors with zero dot product.")
 try:
@@ -115,3 +114,6 @@ try:
     assert orthogonal(v_1prime, v_2prime) == True
 except AssertionError:
     raise Exception("Vector orthogonality failed.  Check your code.")
+
+
+

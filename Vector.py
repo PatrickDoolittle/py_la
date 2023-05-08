@@ -137,7 +137,7 @@ def orthogonal(a:'Vector', b:'Vector'):
         raise ValueError("Vectors of mismatched size")
 
     dp = dot(a,b)
-    if dp < 0.0000001 and dp > -0.0000001:
+    if dp < 0.00001 and dp > -0.00001:
         return True 
     else:
         return False
