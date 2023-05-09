@@ -1,7 +1,6 @@
 from Vector import Vector as myVector
 from Matrix import *
 from manim import *
-from manim import *
 
 def vector_to_manim(vector: myVector):
     return Vector(vector.elements)
