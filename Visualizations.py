@@ -19,17 +19,41 @@ def display_vectors(vectors: List[Vector], labeled=True):
 def add_vectors(static: Vector, operand: Vector):
     class VectorAddition(Scene):
         def construct(self):
-            sum = Vector(static.get_end() + operand.get_end())
-            sum_coordinate = sum.coordinate_label()
-            self.add(NumberPlane())
+            # Show the two vectors used in input
             static_coordinates, operand_coordinates = static.coordinate_label(), operand.coordinate_label()
+            static_coordinates.shift(0.2*DOWN + 0.3*RIGHT)
             self.add(static, operand, static_coordinates, operand_coordinates)
+
+            #We will be showing how the sum vector calculated in the next line is found through an animation!
+            vector_sum = Vector(static.get_end() + operand.get_end())
+            sum_coordinate = vector_sum.coordinate_label()
+
+            # The backdrop is a number plane
+            np = NumberPlane()
+            self.add(np)
+            self.wait(2)
+
+
+            # Move the two coordinate labels to the left of the screen to show vector addition element wise
+            self.play( ApplyMethod(operand_coordinates.shift, 7*LEFT+.4*UP) )
+            self.play( ApplyMethod(static_coordinates.next_to, operand_coordinates, RIGHT, {"buff":1}) )
+
+            plus_symbol = Tex("+").next_to(operand_coordinates, RIGHT, buff=.3)
+            equal_symbol = Tex("=").next_to(static_coordinates, RIGHT, buff=.3)
+            sum_coordinate.next_to(equal_symbol, RIGHT, buff=.3)
+            self.play(Write(plus_symbol), Write(equal_symbol), Write(sum_coordinate))
+            self.wait(2)
 
             # Show the operand slide up the length of the static vector until the tail of the operand is at the head of the static vector
             self.play(ApplyMethod(operand.shift, static.get_end()))
+            self.wait(1)
+
             # Show the sum vector
-            self.play(Create(sum))
-            self.remove(static, operand)
-            self.add(sum_coordinate)
-            self.wait(5)
+            self.play(Create(vector_sum), FadeOut(plus_symbol), FadeOut(equal_symbol), FadeOut(operand_coordinates), FadeOut(static_coordinates))
+            self.play(ApplyMethod(sum_coordinate.next_to, vector_sum, RIGHT))
+            self.wait(2)
+            self.play(FadeOut(static), FadeOut(operand)) 
+            self.remove(static, operand, static_coordinates, operand_coordinates)
+            self.wait(2)
+
     return VectorAddition
