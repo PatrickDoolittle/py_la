@@ -64,6 +64,12 @@ class Vector:
         if not isinstance(value, float) and not isinstance(value, int):
             raise TypeError("Value must be a number")
         self.elements[index] = value
+
+    def is_zero(self):
+        for i in range(len(self)):
+            if self[i] > 0.00001 or self[i] < -0.00001:
+                return False
+        return True
     
     def scale(self, scalar):
         try:

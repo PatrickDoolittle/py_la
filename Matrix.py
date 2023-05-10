@@ -120,31 +120,29 @@ class Matrix:
             new_vectors.append(Vector(row))
         return Matrix(new_vectors)
     
+    def row_echelon(self):
+        #Return transpose of self because row-operations are not defined
+        row_self = self.transpose()
+        for i in range(len(row_self)):
+            #if row[i] is all zeros, skip it
+            if row_self[i].is_zero():
+                continue
 
-## Transforms a matrix into row echelon form
-#    def row_echelon(self):
-#        row_self = self.transpose()  
-#        # Iterate over the columns of the matrix
-#        for column in range(len(row_self[0])):
-#            # Find the first non-zero entry in the column and save it's row_index
-#            pivot_index = None
-#            for row in range(len(row_self)):
-#                if row_self[row][column] != 0:
-#                    pivot_index = row
-#                    break
-#            # If the pivot index is not the same as the column index, swap the rows
-#            if pivot_index != column:
-#                row_self = row_self.row_swap(pivot_index, column)
-#            # Divide the pivot row by the pivot value
-#            row_self[column] = row_self[column].scale(1/row_self[column][pivot_index])
-#            # Every row whose index is greater than "column" must be subtracted by a multiple of the pivot row
-#            # Since the pivot value is 1, this scale i just the value of the pivot column at the row index
-#            for row in range(column+1, len(row_self)):
-#                row_self[row] = row_self[row] - row_self[column].scale(row_self[row][column])
-#            #This column is now done, iterate
-#        return row_self.transpose()
+            #Find first non-zero element in self[i]
+            for j in range(i+1, len(row_self[0])):
+                if row_self[i][j] != 0:
+                    row_self = row_self.swap(i, j)
+                    break
 
+            # Now we know that row i has a non-zero element in column i, divide X^T[i] by that element
+            row_self[i] = row_self[i].scale(1/row_self[i][i])
 
+            # Iterate over all rows except row i
+            for k in range(0, len(row_self)):
+                if k == i:
+                    continue
+                row_self[k] = row_self[k] - row_self[i].scale(row_self[k][i])
+        return row_self.transpose()
 
                 
 

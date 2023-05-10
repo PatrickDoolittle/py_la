@@ -128,3 +128,11 @@ except AssertionError:
 
 
 
+# Is-zero test  
+print("Vector is-zero test.")
+try:
+    v_1prime = Vector([0,0,0])
+    assert v_1prime.is_zero() == True
+    print("Passed")
+except AssertionError:
+    raise Exception("Vector is-zero failed.  Check your code.")
