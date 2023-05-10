@@ -111,8 +111,6 @@ class Matrix:
         copied_self[i], copied_self[j] = copied_self[j], copied_self[i]
         return Matrix(copied_self)
     
-    
-
     def transpose(self):
         new_vectors = []
         for j in range(len(self[0])):
@@ -123,28 +121,28 @@ class Matrix:
         return Matrix(new_vectors)
     
 
-# Transforms a matrix into row echelon form
-    def row_echelon(self):
-        row_self = self.transpose()  
-        # Iterate over the columns of the matrix
-        for column in range(len(row_self[0])):
-            # Find the first non-zero entry in the column and save it's row_index
-            pivot_index = None
-            for row in range(len(row_self)):
-                if row_self[row][column] != 0:
-                    pivot_index = row
-                    break
-            # If the pivot index is not the same as the column index, swap the rows
-            if pivot_index != column:
-                row_self = row_self.row_swap(pivot_index, column)
-            # Divide the pivot row by the pivot value
-            row_self[column] = row_self[column].scale(1/row_self[column][pivot_index])
-            # Every row whose index is greater than "column" must be subtracted by a multiple of the pivot row
-            # Since the pivot value is 1, this scale i just the value of the pivot column at the row index
-            for row in range(column+1, len(row_self)):
-                row_self[row] = row_self[row] - row_self[column].scale(row_self[row][column])
-            #This column is now done, iterate
-        return row_self.transpose()
+## Transforms a matrix into row echelon form
+#    def row_echelon(self):
+#        row_self = self.transpose()  
+#        # Iterate over the columns of the matrix
+#        for column in range(len(row_self[0])):
+#            # Find the first non-zero entry in the column and save it's row_index
+#            pivot_index = None
+#            for row in range(len(row_self)):
+#                if row_self[row][column] != 0:
+#                    pivot_index = row
+#                    break
+#            # If the pivot index is not the same as the column index, swap the rows
+#            if pivot_index != column:
+#                row_self = row_self.row_swap(pivot_index, column)
+#            # Divide the pivot row by the pivot value
+#            row_self[column] = row_self[column].scale(1/row_self[column][pivot_index])
+#            # Every row whose index is greater than "column" must be subtracted by a multiple of the pivot row
+#            # Since the pivot value is 1, this scale i just the value of the pivot column at the row index
+#            for row in range(column+1, len(row_self)):
+#                row_self[row] = row_self[row] - row_self[column].scale(row_self[row][column])
+#            #This column is now done, iterate
+#        return row_self.transpose()
 
 
 
