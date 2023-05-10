@@ -27,10 +27,7 @@ class Vector:
     def __eq__(self, operand:"Vector"):
         if not isinstance(operand, Vector):
             raise TypeError("Operand is not a vector.")
-        if all([abs(self[i] - operand[i]) < .0001 for i in range(len(self))]):
-            return True
-        else:
-            return False
+        return all([abs(self[i] - operand[i]) < .0001 for i in range(len(self))])
     
     def __add__(self, operand:"Vector"):
         if not isinstance(operand, Vector):
@@ -72,20 +69,23 @@ class Vector:
         return True
     
     def scale(self, scalar):
-        try:
-            data = [x * scalar for x in self.elements]
-        except ValueError:
-            raise ValueError("Scalar must be a numerical value")
+        if self.is_zero():
+            return Vector(self.elements)
+        if not isinstance(scalar, float) and not isinstance(scalar, int):
+            raise TypeError("Scalar must be a number")
+        data = [ x * scalar for x in self.elements]
         return Vector(data)
 
     def unitize(self):
-        #Returns a unit vector in the direction of the vector
-        # u = v/|v|
+        if self.is_zero():
+            raise Exception("Cannot unitize a zero vector")
         new_vector = self.scale(1/self.modulus())
         return new_vector        
         
 
     def modulus(self):
+        if self.is_zero():
+            return 0
         mod = 0
         for i in range(0,len(self)):
             mod += self[i]**2
@@ -107,9 +107,9 @@ def dot(a:'Vector', b: 'Vector'):
 def cross(a:'Vector', b: 'Vector'):
     if not isinstance(b, Vector) or not isinstance(a, Vector):
         raise TypeError("Operand is not a vector.")
-    if not len(b) <= 3 and len(a) <= 3:
+    if not len(b) <= 3 or len(a) <= 3:
         raise ValueError("Vectors need be size 3 or less")
-    if not len(b) > 1 and len(a) > 1 :
+    if not len(b) > 1 or len(a) > 1 :
         raise ValueError("Vectors need to be greater than size 1")
     if len(a) != len(b):
         raise ValueError("Vectors of mismatched size")

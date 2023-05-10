@@ -46,10 +46,6 @@ class Matrix:
             raise IndexError("Index out of range")
         else:
             self.vectors[indice] = value
-        
-    def __str__(self):
-        print(f"{len(self[0])}x{len(self)} Matrix: ")
-        return "\n".join([str(x) for x in self.vectors])
     
     def __str__(self):
         print(f"{len(self[0])}x{len(self)} Matrix: ")
@@ -121,6 +117,30 @@ class Matrix:
         return Matrix(new_vectors)
     
     def row_echelon(self):
+        # Returns row-echelon form of self, rows are sorting in ascending amount of leading zeros
+        row_self = self.transpose()
+        for i in range(len(row_self)):
+            #Skip zero columns
+            if self[i].is_zero():
+                continue
+
+            #Find first row with a non-zero element in column i, and s
+            for j in range(i + 1, len(row_self)):
+                if row_self[j][i] != 0:
+                    row_self = row_self.swap(i, j)
+                    break
+ 
+            # Iterate over all *subsequent* rows except row i reducing them
+            for k in range(i+1, len(row_self)):
+                if k == i:
+                    continue
+                if row_self[k][i] == 0:
+                    continue
+                row_self[k] = row_self[k] - row_self[i].scale(row_self[k][i] / row_self[i][i])
+
+        return row_self.transpose()
+
+    def row_reduce(self):
         #Return transpose of self because row-operations are not defined
         row_self = self.transpose()
         for i in range(len(row_self)):

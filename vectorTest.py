@@ -136,3 +136,5 @@ try:
     print("Passed")
 except AssertionError:
     raise Exception("Vector is-zero failed.  Check your code.")
+
+print("All tests passed!")

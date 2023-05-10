@@ -134,8 +134,20 @@ except AssertionError:
 print("Matrix row reduction test.")
 try:
     m_1 = Matrix([Vector([1,2,3]), Vector([4,5,6]), Vector([7,8,9])])
-    m_2 = m_1.row_echelon()
+    m_2 = m_1.row_reduce()
     assert m_2 == Matrix([Vector([1,-0,0]), Vector([0,1,0]), Vector([-1,2,0])])
     print("Passed")
 except AssertionError:
     raise Exception("Matrix row reduction failed.  Check your code.")
+
+# Matrix row echelon test
+print("Matrix row echelon test.")
+try:
+    m_1 = Matrix([Vector([0,8,0]), Vector([0,9,17]), Vector([1,2,9])])
+    m_2 = m_1.row_echelon()
+    assert m_2 == Matrix([Vector([8,0,0]), Vector([9,17,0]), Vector([2,9,1])])
+    print("Passed")
+except AssertionError:
+    raise Exception("Matrix row echelon failed.  Check your code.")
+
+print("All tests passed!")
