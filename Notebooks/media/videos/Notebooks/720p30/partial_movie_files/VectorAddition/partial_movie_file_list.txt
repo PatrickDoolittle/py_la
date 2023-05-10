@@ -1,4 +1,4 @@
 # This file is used internally by FFMPEG.
-file 'file:C:/Users/Patrick Doolittle/Documents/GitHub/py_la/Notebooks/media/videos/Notebooks/720p30/partial_movie_files/VectorAddition/274514146_2759514142_1436255014.mp4'
-file 'file:C:/Users/Patrick Doolittle/Documents/GitHub/py_la/Notebooks/media/videos/Notebooks/720p30/partial_movie_files/VectorAddition/2789044632_554600716_67178925.mp4'
-file 'file:C:/Users/Patrick Doolittle/Documents/GitHub/py_la/Notebooks/media/videos/Notebooks/720p30/partial_movie_files/VectorAddition/2789044632_2292429055_1073896712.mp4'
+file 'file:/home/gaynar/Documents/Github/py_la/Notebooks/media/videos/Notebooks/720p30/partial_movie_files/VectorAddition/274514146_3905874402_528711951.mp4'
+file 'file:/home/gaynar/Documents/Github/py_la/Notebooks/media/videos/Notebooks/720p30/partial_movie_files/VectorAddition/2789044632_207674980_3950840697.mp4'
+file 'file:/home/gaynar/Documents/Github/py_la/Notebooks/media/videos/Notebooks/720p30/partial_movie_files/VectorAddition/2789044632_36632488_3429772832.mp4'
