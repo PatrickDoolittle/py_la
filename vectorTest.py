@@ -4,6 +4,8 @@ Unit test for checking the Vector Module Functionality
 
 from Vector import *
 
+print("Testing Vector Module")
+
 # Vector creation test
 print("Vector creation test and to-string test.")
 try: 
@@ -123,6 +125,7 @@ try:
     v_1prime = Vector([1,2,3])
     v_2prime = Vector([2,-1,0])
     assert orthogonal(v_1prime, v_2prime) == True
+    print("Passed")
 except AssertionError:
     raise Exception("Vector orthogonality failed.  Check your code.")
 

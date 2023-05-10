@@ -57,3 +57,50 @@ def add_vectors(static: Vector, operand: Vector):
             self.wait(2)
 
     return VectorAddition
+
+def scale_vector(operand, scalar):
+    class VectorScaling(MovingCameraScene):
+        def construct(self):
+            #Adjust camera frame
+            self.camera.frame_height = 10
+            self.camera.frame_width = 13
+            self.camera.frame_center = 3*UP
+
+            # Show the two vectors used in input
+            operand_coordinates = operand.coordinate_label()
+            operand_coordinates.shift(0.2*DOWN + 0.3*RIGHT)
+            self.add(operand, operand_coordinates)
+
+            #We will be showing how the sum vector calculated in the next line is found through an animation!
+            vector_scaled = Vector(operand.get_end() * scalar)
+            scaled_coordinate = vector_scaled.coordinate_label()
+
+            # The backdrop is a number plane
+            np = NumberPlane(
+                x_range=[-10, 10, 1],
+                y_range=[-2, 20, 1],
+                axis_config={
+                "stroke_color": GREY_A,
+                "stroke_width": 2,
+                }
+            )
+
+
+            self.add(np)
+            self.wait(2)
+
+            # Move the two coordinate labels to the left of the screen to show vector addition element wise
+            self.play( ApplyMethod(operand_coordinates.shift, 7*LEFT+.4*UP) )
+
+            scalar_symbol = Tex("* " + str(scalar)).next_to(operand_coordinates, RIGHT, buff=.3)
+            equal_symbol = Tex("=").next_to(scalar_symbol, RIGHT, buff=.3)
+            scaled_coordinate.next_to(equal_symbol, RIGHT, buff=.3)
+            self.play(Write(scalar_symbol), Write(equal_symbol), Write(scaled_coordinate))
+            self.wait(2)
+
+            # Show the operand slide up the length of the static vector until the tail of the operand is at the head of the static vector
+            self.play(ApplyMethod(operand.scale, scalar, {"about_point":ORIGIN}))
+            self.wait(1)
+
+
+    return VectorScaling

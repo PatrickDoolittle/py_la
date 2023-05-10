@@ -4,6 +4,8 @@ Unit Test for checking the Matrix Module Functionality
 from Matrix import *
 from Vector import *
 
+print("Testing Matrix Module")
+
 # Matrix creation test
 print("Matrix creation test and to-string test.")
 try:
