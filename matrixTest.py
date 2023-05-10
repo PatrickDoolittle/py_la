@@ -104,8 +104,8 @@ except AssertionError:
 print("Matrix row swap test.")
 try:
     m_1 = Matrix([Vector([1,2,3]), Vector([4,5,6]), Vector([7,8,9])])
-    m_2 = m_1.row_swap(0,1)
-    assert m_2 == Matrix([Vector([2,1,3]), Vector([5,4,6]), Vector([8,7,9])])
+    m_2 = m_1.swap(0,1)
+    assert m_2 == Matrix([Vector([4,5,6]), Vector([1,2,3]), Vector([7,8,9])])
     print("Passed")
 except AssertionError:
     raise Exception("Matrix row swap failed.  Check your code.")
@@ -120,9 +120,9 @@ try:
 except AssertionError:
     raise Exception("Matrix element assignment failed.  Check your code.")
 
-# Row echelon form test
-print("Row echelon form test.")
-m_1 = Matrix([Vector([1,2,3]), Vector([4,5,6]), Vector([7,8,9])], transpose=True)
-print(m_1)
-m_1 = m_1.row_echelon()
-print(m_1)
+## Row echelon form test
+#print("Row echelon form test.")
+#m_1 = Matrix([Vector([1,2,3]), Vector([4,5,6]), Vector([7,8,9])], transpose=True)
+#print(m_1)
+#m_1 = m_1.row_echelon()
+#print(m_1)

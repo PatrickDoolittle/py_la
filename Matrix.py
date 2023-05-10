@@ -105,12 +105,11 @@ class Matrix:
             new_vectors.append(self[i] * scalar)
         return Matrix(new_vectors)
 
-    def row_swap(self, i, j):
+    def swap(self, i, j):
         #  Returns a new_matrix with the i and jth rows swapped
-        row_self = self.transpose()
-        new_rows = row_self.vectors.copy()
-        new_rows[i], new_rows[j] = new_rows[j], new_rows[i]
-        return Matrix(new_rows).transpose()
+        copied_self = self.vectors.copy()
+        copied_self[i], copied_self[j] = copied_self[j], copied_self[i]
+        return Matrix(copied_self)
     
     
 
@@ -139,12 +138,13 @@ class Matrix:
             if pivot_index != column:
                 row_self = row_self.row_swap(pivot_index, column)
             # Divide the pivot row by the pivot value
-            row_self[column] = row_self[column].scale(1/row_self[column][column])
+            row_self[column] = row_self[column].scale(1/row_self[column][pivot_index])
             # Every row whose index is greater than "column" must be subtracted by a multiple of the pivot row
             # Since the pivot value is 1, this scale i just the value of the pivot column at the row index
             for row in range(column+1, len(row_self)):
                 row_self[row] = row_self[row] - row_self[column].scale(row_self[row][column])
             #This column is now done, iterate
+        return row_self.transpose()
 
 
 
