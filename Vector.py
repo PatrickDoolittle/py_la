@@ -9,7 +9,7 @@ import math
 
 
 class Vector:
-    def __init__(self, elements: List[float]):
+    def __init__(self, elements):
         if not isinstance(elements, list):
             raise TypeError("elements must be a list")
         if len(elements) == 0:
@@ -19,7 +19,7 @@ class Vector:
         except TypeError as e:
             raise TypeError("Elements of list must be numerical")
         except Exception as e:
-            raise Exception("Fail!")
+            raise Exception("Vector init error")
         
     def __len__(self):
         return len(self.elements)
@@ -133,14 +133,9 @@ def vectorProjection(a:'Vector', b:'Vector'):
     if len(a) != len(b):
         raise ValueError("Vectors of mismatched size")
     scaling_factor = dot(a,b) / b.modulus()**2
-    projection_elements = b.elements.copy()
-    projection = Vector(projection_elements)
-    projection = projection.scale(scaling_factor)
+    projection = b.scale(scaling_factor)
     return projection
 
-
-
-        
 def orthogonal(a:'Vector', b:'Vector'):
     if not isinstance(a, Vector) or not isinstance(b,Vector):
         raise TypeError("Operand is not a vector.")
