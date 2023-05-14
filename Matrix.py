@@ -70,15 +70,17 @@ class Matrix:
 
 
     def __mul__(self, operand:"Vector"):
-        if not isinstance(operand, Vector):
-            raise TypeError("Operand must be a vector")
-        # Columns of matrix must equal rows of vector
-        if len(self) != len(operand):
-            raise ValueError("Matrix and vector must be of same length")
-        new_vector = []
-        for i in range(len(self)):
-            new_vector.append(dot(self.transpose()[i], operand))
-        return Vector(new_vector)
+        if isinstance(operand, Vector):
+            if len(self) != len(operand):
+                raise ValueError("Matrix and vector must be of same length")
+            new_vector = []
+            for i in range(len(self)):
+                new_vector.append(dot(self.transpose()[i], operand))
+            return Vector(new_vector)
+        elif isinstance(operand, int) or isinstance(operand, float):
+            return self.scale(operand)
+        else:
+            raise TypeError("Operand must be a vector or scalar")
     
     def __matmul__(self, operand:"Matrix"):
         if not isinstance(operand, Matrix):
@@ -157,36 +159,90 @@ class Matrix:
             # Now we know that row i has a non-zero element in column i, divide X^T[i] by that element
             row_self[i] = row_self[i].scale(1/row_self[i][i])
 
+
             # Iterate over all rows except row i
             for k in range(0, len(row_self)):
                 if k == i:
                     continue
                 row_self[k] = row_self[k] - row_self[i].scale(row_self[k][i])
         return row_self.transpose()
+    
+    def row_reduce_augmented(self, augmented):
+        if not isinstance(augmented, Matrix):
+            raise TypeError("Augmented matrix must be a matrix")
+        if len(self) != len(augmented):
+            raise ValueError("Matrices must have the same number of rows")
+        row_self = self.transpose()
+        row_augmented = augmented.transpose()
+        big_matrix_data = row_self.vectors + row_augmented.vectors
+        big_matrix = Matrix(big_matrix_data)
+        # Only row reduce with respect to the len(self) columns of the big matrix
+        for i in range(len(self)):
+            #if row[i] is all zeros, skip it
+            if big_matrix[i].is_zero():
+                continue
 
-                
+            #Find first non-zero element in self[i]
+            for j in range(i+1, len(big_matrix[0])):
+                if big_matrix[i][j] != 0:
+                    big_matrix = big_matrix.swap(i, j)
+                    break
 
-'''
-Need to implement gaussian elimination to find number of linear independent vectors
-before trying GS process
-'''
+            # Now we know that row i has a non-zero element in column i, divide X^T[i] by that element
+            big_matrix[i] = big_matrix[i].scale(1/big_matrix[i][i])
 
-#    def gramSchmidt(self):
-#        '''
-#        Returns the gram schmidt orthogonalization of the matrix A
-#        '''
-#        e_hat = self[0].unitize()
-#        hat_vectors  = [e_hat]
-#        for i in range(1,len(self)):
-#            new_hat = self[i] - vectorProjection(self[i], e_hat)
-#            for j in range(1, len(hat_vectors)):
-#                new_hat = new_hat - vectorProjection(self[i], hat_vectors[j])
-#            hat_vectors.append(new_hat.unitize())
-#        new_matrix = Matrix(hat_vectors)
-#        print(new_matrix)
-#        for i in range(len(new_matrix)):
-#            for j in range(i+1,len(new_matrix)):
-#                if i != j:
-#                    if not orthogonal(new_matrix[i], new_matrix[j]):
-#                        raise ValueError("Gram schmidt failed to produce orthogonal vectors.")
-#        return new_matrix
+
+            # Iterate over all rows except row i
+            for k in range(0, len(big_matrix)):
+                if k == i:
+                    continue
+                big_matrix[k] = big_matrix[k] - big_matrix[i].scale(big_matrix[k][i])
+        return big_matrix.transpose()
+    
+    
+    def rank(self):
+        #perform row reduction and then count the number of non-zero rows
+        reduced_self_rows = self.row_reduce().transpose()
+        rank = 0
+        for i in range(len(reduced_self_rows)):
+            if not reduced_self_rows[i].is_zero():
+                rank += 1
+        return rank
+    
+    def gramSchmidt(self):
+        '''
+        Returns the gram schmidt orthogonalization of the matrix A
+        '''
+        e_hat = self[0].unitize()
+        hat_vectors  = [e_hat]
+        for i in range(1,len(self)):
+            new_hat = self[i] - vectorProjection(self[i], e_hat)
+            for j in range(1, len(hat_vectors)):
+                new_hat = new_hat - vectorProjection(self[i], hat_vectors[j])
+            hat_vectors.append(new_hat.unitize())
+        new_matrix = Matrix(hat_vectors)
+        for i in range(len(new_matrix)):
+            for j in range(i+1,len(new_matrix)):
+                if i != j:
+                    if not orthogonal(new_matrix[i], new_matrix[j]):
+                        raise ValueError("Gram schmidt failed to produce orthogonal vectors.")
+        return new_matrix
+    
+    def inverse(self):
+        if len(self) != len(self[0]):
+            raise ValueError("Matrix must be square to have an inverse")
+        identity_matrix = Matrix.identity(len(self))
+        reduced_self, inverse = self.row_reduce(augmented=identity_matrix)
+        return inverse
+        
+    @classmethod
+    def identity(cls, size):
+        if size < 1:
+            raise ValueError("Matrix must have at least one column")
+        columns = []
+        for i in range(size):
+            vector = [0 for j in range(size)]
+            vector[i] = 1
+            columns.append(Vector(vector))
+        return cls(columns)
+

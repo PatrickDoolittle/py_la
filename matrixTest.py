@@ -81,6 +81,17 @@ try:
 except AssertionError:
     raise Exception("Matrix- Vector multiplication failed.  Check your code.")
 
+try:
+    v_1 = Vector([2,3.5])
+    v_2 = Vector([-2,2])
+    m_1 = Matrix([v_1, v_2])
+    v_3 = Vector([1,1])
+    v_4 = m_1 * v_3
+    assert v_4 == Vector([0,5.5])
+    print("Passed")
+except AssertionError:
+    raise Exception("Matrix- Vector multiplication failed.  Check your code.")
+
 # Matrix-Matrix multiplication test
 print("Matrix-Matrix multiplication test.")
 try:
@@ -151,5 +162,15 @@ try:
     print("Passed")
 except AssertionError:
     raise Exception("Matrix row echelon failed.  Check your code.")
+
+# Variable Size Identity Matrix Test
+print("Variable Size Identity Matrix Test")
+try:
+    m_1 = Matrix.identity(3)
+    assert m_1 == Matrix([Vector([1,0,0]), Vector([0,1,0]), Vector([0,0,1])])
+    print("Passed")
+except AssertionError:
+    raise Exception("Variable Size Identity Matrix Test failed.  Check your code.")
+
 
 print("All tests passed!")

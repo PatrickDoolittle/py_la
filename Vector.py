@@ -90,6 +90,14 @@ class Vector:
         for i in range(0,len(self)):
             mod += self[i]**2
         return math.sqrt(mod)
+    
+    @classmethod
+    def zero(cls, size):
+        if size < 1:
+            raise ValueError("Vector must have at least one element")
+        data = [0 for i in range(size)]
+        return cls(data)
+
 
 '''
 Related functions not made methods

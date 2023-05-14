@@ -140,4 +140,14 @@ try:
 except AssertionError:
     raise Exception("Vector is-zero failed.  Check your code.")
 
+# Zero-vector test
+print("Vector zero-vector test.")
+try:
+    v = Vector.zero(3)
+    assert v == Vector([0,0,0])
+    print("Passed")
+except AssertionError:
+    raise Exception("Vector zero-vector failed.  Check your code.")
+
+
 print("All tests passed!")
