@@ -172,32 +172,37 @@ class Matrix:
             raise TypeError("Augmented matrix must be a matrix")
         if len(self) != len(augmented):
             raise ValueError("Matrices must have the same number of rows")
-        row_self = self.transpose()
-        row_augmented = augmented.transpose()
-        big_matrix_data = row_self.vectors + row_augmented.vectors
-        big_matrix = Matrix(big_matrix_data)
+        self_rows = self.transpose()
+        augmented_rows = augmented.transpose()
         # Only row reduce with respect to the len(self) columns of the big matrix
-        for i in range(len(self)):
+        for i in range(len(self_rows)):
             #if row[i] is all zeros, skip it
-            if big_matrix[i].is_zero():
+            if self_rows[i].is_zero():
                 continue
 
-            #Find first non-zero element in self[i]
-            for j in range(i+1, len(big_matrix[0])):
-                if big_matrix[i][j] != 0:
-                    big_matrix = big_matrix.swap(i, j)
+            #Find first non-zero element in self[i], then swap that row in both matrices
+            for j in range(i+1, len(self[0])):
+                if self_rows[i][j] != 0:
+                    self_rows = self_rows.swap(i, j)
+                    augmented_rows = augmented_rows.swap(i, j)
                     break
 
-            # Now we know that row i has a non-zero element in column i, divide X^T[i] by that element
-            big_matrix[i] = big_matrix[i].scale(1/big_matrix[i][i])
+            # Now we know that row i has a non-zero element in column i, divide that row in both matrices by that element
+            scale_factor = self_rows[i][i]
+            if scale_factor != 0:
+                augmented_rows[i] = augmented_rows[i].scale(1/scale_factor)      
+                self_rows[i] = self_rows[i].scale(1/scale_factor)
+
 
 
             # Iterate over all rows except row i
-            for k in range(0, len(big_matrix)):
+            for k in range(0, len(self_rows)):
                 if k == i:
                     continue
-                big_matrix[k] = big_matrix[k] - big_matrix[i].scale(big_matrix[k][i])
-        return big_matrix.transpose()
+                scale_factor = self_rows[k][i]
+                self_rows[k] = self_rows[k] - self_rows[i].scale(scale_factor)
+                augmented_rows[k] = augmented_rows[k] - augmented_rows[i].scale(scale_factor)
+        return self_rows.transpose(), augmented_rows.transpose()
     
     
     def rank(self):
