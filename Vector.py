@@ -27,11 +27,11 @@ class Vector:
     def __eq__(self, operand:"Vector"):
         if not isinstance(operand, Vector):
             raise TypeError("Operand is not a vector.")
-        return all([abs(self[i] - operand[i]) < .0001 for i in range(len(self))])
+        return all([abs(self[i] - operand[i]) < .01 for i in range(len(self))])
     
     def __add__(self, operand:"Vector"):
         if not isinstance(operand, Vector):
-            raise TypeError("Operand is not a vector.")
+            raise TypeError("Operand in vector addition is not a vector.")
         if len(self) != len(operand):
             raise ValueError("Vectors of mismatched size")
         summand = [self[i] + operand[i] for i in range(len(self))]
@@ -39,7 +39,7 @@ class Vector:
     
     def __sub__(self, operand:"Vector"):
         if not isinstance(operand, Vector):
-            raise TypeError("Operand is not a vector.")
+            raise TypeError("Operand in vector addition is not a vector.")
         if len(self) != len(operand):
             raise ValueError("Vectors of mismatched size")
         difference = [self[i] - operand[i] for i in range(len(self))]
@@ -49,7 +49,7 @@ class Vector:
         if isinstance(operand, float) or isinstance(operand, int):
             return self.scale(operand)
         elif isinstance(operand, Vector):
-            raise TypeError("Vector multiplication is not defined.")
+            raise TypeError("Vector-vector multiplication is not defined.")
 
     def __str__(self):
         return str(self.elements)

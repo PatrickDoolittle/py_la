@@ -26,7 +26,7 @@ class Matrix:
     def __eq__(self, operand:"Matrix"):
         if not isinstance(operand, Matrix):
             raise TypeError("Operand must be a matrix")
-        if self.vectors == operand.vectors:
+        if all([self[i] == operand[i] for i in range(len(self))]):
             return True
         else:
             return False
@@ -38,14 +38,8 @@ class Matrix:
     def __setitem__(self, indice, value):
         if isinstance(value, Vector):
             self.vectors[indice] = value
-        elif not isinstance(value, int) and not isinstance(value, float):
-            raise TypeError("Matrix elements must be numbers")
-        elif not isinstance(indice, int):
-            raise TypeError("Matrix indices must be integers")
-        elif indice >= len(self):
-            raise IndexError("Index out of range")
-        else:
-            self.vectors[indice] = value
+        else:  
+            raise TypeError("Value must be a vector")
     
     def __str__(self):
         print(f"{len(self[0])}x{len(self)} Matrix: ")
@@ -69,19 +63,22 @@ class Matrix:
         return Matrix(new_vectors)
 
 
-    def __mul__(self, operand:"Vector"):
+    def __mul__(self, operand):
+        # Return a linear combination of the column vector where the scalar of each column is the corresponding element of the operand vector
         if isinstance(operand, Vector):
             if len(self) != len(operand):
-                raise ValueError("Matrix and vector must be of same length")
-            new_vector = []
-            for i in range(len(self)):
-                new_vector.append(dot(self.transpose()[i], operand))
-            return Vector(new_vector)
-        elif isinstance(operand, int) or isinstance(operand, float):
-            return self.scale(operand)
+                raise ValueError("Number of columns in Matrix must match elements of Vector")
+            new_vector = self[0].scale(operand[0])
+            for i in range(1,len(self)):
+                new_vector += self[i].scale(operand[i])
+            return new_vector
+        elif isinstance(operand, int) or isinstance(operand,float):
+            new_vectors = [self[i]*operand for i in range(len(self))]
+            return Matrix(new_vectors)
         else:
-            raise TypeError("Operand must be a vector or scalar")
-    
+            raise TypeError("Operand must be a Vector or Scalar")
+
+
     def __matmul__(self, operand:"Matrix"):
         if not isinstance(operand, Matrix):
             raise TypeError("Operand must be a matrix")
@@ -104,12 +101,14 @@ class Matrix:
         return Matrix(new_vectors)
 
     def swap(self, i, j):
-        #  Returns a new_matrix with the i and jth rows swapped
+        #  Returns a new_matrix with the i and jth columns swapped, typically a row operation (performed on the transpose)
         copied_self = self.vectors.copy()
         copied_self[i], copied_self[j] = copied_self[j], copied_self[i]
         return Matrix(copied_self)
     
     def transpose(self):
+        # Returns the transpose of a matrix. This function takes iterates over the rows len(self[0]) of the matrix collecting their elements (len(self)) into Vectors
+        # Which the transpose function can then use to create a new matrix
         new_vectors = []
         for j in range(len(self[0])):
             row = []
@@ -125,13 +124,11 @@ class Matrix:
             #Skip zero columns
             if self[i].is_zero():
                 continue
-
             #Find first row with a non-zero element in column i, and s
             for j in range(i + 1, len(row_self)):
                 if row_self[j][i] != 0:
                     row_self = row_self.swap(i, j)
                     break
- 
             # Iterate over all *subsequent* rows except row i reducing them
             for k in range(i+1, len(row_self)):
                 if k == i:
@@ -139,7 +136,6 @@ class Matrix:
                 if row_self[k][i] == 0:
                     continue
                 row_self[k] = row_self[k] - row_self[i].scale(row_self[k][i] / row_self[i][i])
-
         return row_self.transpose()
 
     def row_reduce(self):
@@ -149,17 +145,14 @@ class Matrix:
             #if row[i] is all zeros, skip it
             if row_self[i].is_zero():
                 continue
-
-            #Find first non-zero element in self[i]
+            #Find first non-zero element in column i, then swap that with row i
             for j in range(i+1, len(row_self[0])):
-                if row_self[i][j] != 0:
+                if row_self[j][i] != 0:
                     row_self = row_self.swap(i, j)
                     break
-
             # Now we know that row i has a non-zero element in column i, divide X^T[i] by that element
-            row_self[i] = row_self[i].scale(1/row_self[i][i])
-
-
+            if row_self[i][i] != 0:
+                row_self[i] = row_self[i].scale(1/row_self[i][i])
             # Iterate over all rows except row i
             for k in range(0, len(row_self)):
                 if k == i:
@@ -167,10 +160,10 @@ class Matrix:
                 row_self[k] = row_self[k] - row_self[i].scale(row_self[k][i])
         return row_self.transpose()
     
-    def row_reduce_augmented(self, augmented):
+    def row_reduce_augmented(self, augmented:"Matrix"):
         if not isinstance(augmented, Matrix):
             raise TypeError("Augmented matrix must be a matrix")
-        if len(self) != len(augmented):
+        if len(self[0]) != len(augmented[0]):
             raise ValueError("Matrices must have the same number of rows")
         self_rows = self.transpose()
         augmented_rows = augmented.transpose()
@@ -180,9 +173,9 @@ class Matrix:
             if self_rows[i].is_zero():
                 continue
 
-            #Find first non-zero element in self[i], then swap that row in both matrices
-            for j in range(i+1, len(self[0])):
-                if self_rows[i][j] != 0:
+            #Find first non-zero element in column i of self_rows, then swap that row in both matrices
+            for j in range(i+1, len(self_rows)):
+                if self_rows[j][i] != 0:
                     self_rows = self_rows.swap(i, j)
                     augmented_rows = augmented_rows.swap(i, j)
                     break
@@ -237,7 +230,7 @@ class Matrix:
         if len(self) != len(self[0]):
             raise ValueError("Matrix must be square to have an inverse")
         identity_matrix = Matrix.identity(len(self))
-        reduced_self, inverse = self.row_reduce(augmented=identity_matrix)
+        reduced_self, inverse = self.row_reduce_augmented(identity_matrix)
         return inverse
         
     @classmethod

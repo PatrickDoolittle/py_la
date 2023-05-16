@@ -103,6 +103,15 @@ try:
 except AssertionError:
     raise Exception("Matrix-Matrix multiplication failed.  Check your code.")
 
+try:
+    m_1 = Matrix([Vector([1,2,3]), Vector([4,5,6])])
+    m_2 = Matrix([Vector([1,2]), Vector([4,5]), Vector([7,8])])
+    m_3 = m_1 @ m_2
+    assert m_3 == Matrix([Vector([9,12,15]), Vector([24,33,42]), Vector([39,54,69])])
+    print("Passed")
+except AssertionError:
+    raise Exception("Matrix-Matrix multiplication failed.  Check your code.")
+
 # Matrix transpose test
 print("Matrix transpose test.")
 try:
@@ -113,15 +122,15 @@ try:
 except AssertionError:
     raise Exception("Matrix transpose failed.  Check your code.")
 
-# Matrix row swap test  
-print("Matrix row swap test.")
+# Matrix Column swap test  
+print("Matrix Column swap test.")
 try:
     m_1 = Matrix([Vector([1,2,3]), Vector([4,5,6]), Vector([7,8,9])])
     m_2 = m_1.swap(0,1)
     assert m_2 == Matrix([Vector([4,5,6]), Vector([1,2,3]), Vector([7,8,9])])
     print("Passed")
 except AssertionError:
-    raise Exception("Matrix row swap failed.  Check your code.")
+    raise Exception("Matrix column swap failed.  Check your code.")
 
 # Matrix element assignment test
 print("Matrix element assignment test.")
@@ -153,6 +162,15 @@ try:
 except AssertionError:
     raise Exception("Matrix row reduction failed.  Check your code.")
 
+try:
+    m_1 = Matrix([Vector([1,0,3]), Vector([2,1,8]), Vector([3,2,9])])
+    m_2 = m_1.row_reduce()
+    print("m_2: " + str(m_2))
+    assert m_2 == Matrix([Vector([1,0,0]), Vector([0,1,0]), Vector([0,0,1])])
+    print("Passed")
+except AssertionError:
+    raise Exception("Matrix row reduction failed.  Check your code.")
+
 # Matrix row echelon test
 print("Matrix row echelon test.")
 try:
@@ -163,6 +181,21 @@ try:
 except AssertionError:
     raise Exception("Matrix row echelon failed.  Check your code.")
 
+# Augmented Matrix row echelon test
+print("Augmented Matrix row reduction test.")
+try:
+    m_1 = Matrix([Vector([1,0,3]), Vector([2,1,8]), Vector([3,2,9])])
+    m_2 = Matrix([Vector([1,0,0]), Vector([0,1,0,]), Vector([0,0,1])])
+    m_3, m_4 = m_1.row_reduce_augmented(m_2)
+    print(m_3)
+    print(m_4)
+    assert m_3 == Matrix([Vector([1,0,0]), Vector([0,1,0]), Vector([0,0,1])])
+    assert m_4 == Matrix([Vector([7/4.,-3/2.,3/4.]), Vector([-3/2.,0.,1/2.]), Vector([-1/4.,1/2.,-1/4])])
+    print("Passed")
+except AssertionError:
+    raise Exception("Augmented Matrix row reduction failed.  Check your code.")
+
+
 # Variable Size Identity Matrix Test
 print("Variable Size Identity Matrix Test")
 try:
@@ -172,5 +205,30 @@ try:
 except AssertionError:
     raise Exception("Variable Size Identity Matrix Test failed.  Check your code.")
 
+# Matrix __setitem__ test
+print("Matrix Element Assigment test")
+try:
+    m_1 = Matrix.identity(3)
+    m_1[0][0] = 5
+    assert m_1 == Matrix([Vector([5,0,0]), Vector([0,1,0]), Vector([0,0,1])])
+    print("Passed") 
+except AssertionError:
+    print("Element Assignment failed.  Check your code.")
+
+print("Matrix Vector Assignment test")
+try:
+    m_1 = Matrix.identity(3)
+    m_1[0] = Vector([5,5,5])
+    assert m_1 == Matrix([Vector([5,5,5]), Vector([0,1,0]), Vector([0,0,1])])
+    print("Passed")
+except AssertionError:
+    print("Vector Assignment failed.  Check your code.")
+
+print("Printing string form of 3x3 Matrix")
+try:
+    m_1 = Matrix([Vector([1,4,7]), Vector([2,5,8]), Vector([3,6,9])])
+    print(m_1)
+except Exception:
+    print("Printing failed.  Check your code.")
 
 print("All tests passed!")

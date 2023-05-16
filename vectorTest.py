@@ -40,6 +40,13 @@ try:
     print("Passed")
 except AssertionError:
     raise Exception("Vector equality failed.  Check your code.")
+v_8 = Vector([1.001,2.001,3.001])
+print("Vector equality test with floating point error.")
+try:
+    assert v_1 == v_8
+    print("Passed")
+except AssertionError:
+    raise Exception("Vector approximate equality failed.  Check your code.")
 
 # Vector item assignment test
 print("Vector item assignment test.")
