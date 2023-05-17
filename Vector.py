@@ -27,7 +27,7 @@ class Vector:
     def __eq__(self, operand:"Vector"):
         if not isinstance(operand, Vector):
             raise TypeError("Operand is not a vector.")
-        return all([abs(self[i] - operand[i]) < .01 for i in range(len(self))])
+        return all([abs(self[i] - operand[i]) < .0001 for i in range(len(self))])
     
     def __add__(self, operand:"Vector"):
         if not isinstance(operand, Vector):
@@ -81,7 +81,6 @@ class Vector:
             raise Exception("Cannot unitize a zero vector")
         new_vector = self.scale(1/self.modulus())
         return new_vector        
-        
 
     def modulus(self):
         if self.is_zero():

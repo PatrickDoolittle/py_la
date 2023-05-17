@@ -40,7 +40,7 @@ try:
     print("Passed")
 except AssertionError:
     raise Exception("Vector equality failed.  Check your code.")
-v_8 = Vector([1.001,2.001,3.001])
+v_8 = Vector([1.00001,2.00001,3.00001])
 print("Vector equality test with floating point error.")
 try:
     assert v_1 == v_8

@@ -156,7 +156,7 @@ except AssertionError:
 print("Matrix row reduction test.")
 try:
     m_1 = Matrix([Vector([1,2,3]), Vector([4,5,6]), Vector([7,8,9])])
-    m_2 = m_1.row_reduce()
+    m_2 = m_1.reduce()
     assert m_2 == Matrix([Vector([1,-0,0]), Vector([0,1,0]), Vector([-1,2,0])])
     print("Passed")
 except AssertionError:
@@ -164,8 +164,7 @@ except AssertionError:
 
 try:
     m_1 = Matrix([Vector([1,0,3]), Vector([2,1,8]), Vector([3,2,9])])
-    m_2 = m_1.row_reduce()
-    print("m_2: " + str(m_2))
+    m_2 = m_1.reduce()
     assert m_2 == Matrix([Vector([1,0,0]), Vector([0,1,0]), Vector([0,0,1])])
     print("Passed")
 except AssertionError:
@@ -175,7 +174,8 @@ except AssertionError:
 print("Matrix row echelon test.")
 try:
     m_1 = Matrix([Vector([0,8,0]), Vector([0,9,17]), Vector([1,2,9])])
-    m_2 = m_1.row_echelon()
+    m_2 = m_1.reduce(echelon=True)
+    print(m_2)
     assert m_2 == Matrix([Vector([8,0,0]), Vector([9,17,0]), Vector([2,9,1])])
     print("Passed")
 except AssertionError:
@@ -186,9 +186,7 @@ print("Augmented Matrix row reduction test.")
 try:
     m_1 = Matrix([Vector([1,0,3]), Vector([2,1,8]), Vector([3,2,9])])
     m_2 = Matrix([Vector([1,0,0]), Vector([0,1,0,]), Vector([0,0,1])])
-    m_3, m_4 = m_1.row_reduce_augmented(m_2)
-    print(m_3)
-    print(m_4)
+    m_3, m_4 = m_1.reduce(augmented=True, augment=m_2)
     assert m_3 == Matrix([Vector([1,0,0]), Vector([0,1,0]), Vector([0,0,1])])
     assert m_4 == Matrix([Vector([7/4.,-3/2.,3/4.]), Vector([-3/2.,0.,1/2.]), Vector([-1/4.,1/2.,-1/4])])
     print("Passed")
