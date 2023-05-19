@@ -117,7 +117,7 @@ class Matrix:
             new_vectors.append(Vector(row))
         return Matrix(new_vectors)
      
-    def reduce(self: "Matrix", echelon=False, augmented=False, augment=None):
+    def reduce(self: "Matrix", echelon=False, augmented=False, augment=None, LU=False):
 
         # Perform a row reduction, possibly augmented, possibly to echelon form
         row_matrix = self.transpose()
@@ -136,13 +136,25 @@ class Matrix:
             # Skip zero rows (at the bottom)
             if row_matrix[pivot_column].is_zero():
                 continue
-            best_pivot_index = pivot_column
-            for compare_row in range(pivot_column, len(row_matrix)):
-                if abs(row_matrix[compare_row][pivot_column]) > abs(row_matrix[best_pivot_index][pivot_column]):
-                    best_pivot_index = compare_row
-            row_matrix = row_matrix.swap(pivot_column, best_pivot_index)
-            if augmented:   
-                augmented_rows = augmented_rows.swap(pivot_column, best_pivot_index)
+
+            #If Echelon, Swap with first row that has first non-zero element in pivot column
+            if echelon and row_matrix[pivot_column][pivot_column] == 0:
+                for compare_row in range(pivot_column, len(row_matrix)):
+                    if row_matrix[compare_row][pivot_column] != 0:
+                        row_matrix = row_matrix.swap(pivot_column, compare_row)
+                        if augmented:
+                            augmented_rows = augmented_rows.swap(pivot_column, compare_row)
+                        break
+
+            # Swap the best pivot row with the pivot row (if not echelon)
+            if not echelon:
+                best_pivot_index = pivot_column
+                for compare_row in range(pivot_column, len(row_matrix)):
+                    if abs(row_matrix[compare_row][pivot_column]) > abs(row_matrix[best_pivot_index][pivot_column]):
+                        best_pivot_index = compare_row
+                row_matrix = row_matrix.swap(pivot_column, best_pivot_index)
+                if augmented:   
+                    augmented_rows = augmented_rows.swap(pivot_column, best_pivot_index)
             # Now we know that row_matrix[pivot_row][pivot_column] has the best pivot, so we can scale it to 1
             scale_factor = row_matrix[pivot_column][pivot_column]
             if scale_factor != 0 or scale_factor != 1:
@@ -159,9 +171,14 @@ class Matrix:
             for reduce_row in range(start_row, len(row_matrix)):
                 if reduce_row == pivot_column:
                     continue
-                scale_factor = row_matrix[reduce_row][pivot_column]
+                if echelon:
+                    scale_factor = row_matrix[reduce_row][pivot_column]/row_matrix[pivot_column][pivot_column]
+                else:
+                    scale_factor = row_matrix[reduce_row][pivot_column]
                 row_matrix[reduce_row] = row_matrix[reduce_row] - row_matrix[pivot_column].scale(scale_factor)
-                if augmented:
+                if augmented and LU:
+                    augmented_rows[reduce_row][pivot_column] = augmented_rows[reduce_row][pivot_column] + augmented_rows[pivot_column][pivot_column]*scale_factor
+                elif augmented:
                     augmented_rows[reduce_row] = augmented_rows[reduce_row] - augmented_rows[pivot_column].scale(scale_factor)
 
         if augmented:
@@ -171,7 +188,7 @@ class Matrix:
     
     def rank(self):
         #perform row reduction and then count the number of non-zero rows
-        reduced_self_rows = self.row_reduce().transpose()
+        reduced_self_rows = self.reduce().transpose()
         rank = 0
         for i in range(len(reduced_self_rows)):
             if not reduced_self_rows[i].is_zero():
@@ -201,9 +218,16 @@ class Matrix:
         if len(self) != len(self[0]):
             raise ValueError("Matrix must be square to have an inverse")
         identity_matrix = Matrix.identity(len(self))
-        reduced_self, inverse = self.row_reduce_augmented(identity_matrix)
+        reduced_self, inverse = self.reduce(augmented=True, augment=identity_matrix)
         return inverse
         
+    def LU(self):
+        if len(self) != len(self[0]):
+            raise ValueError("Matrix must be square to have an inverse")
+        identity_matrix = Matrix.identity(len(self))
+        reduced_self, inverse = self.reduce(echelon=True, augmented=True, augment=identity_matrix, LU=True)
+        return inverse, reduced_self
+
     @classmethod
     def identity(cls, size):
         if size < 1:

@@ -103,7 +103,7 @@ Related functions not made methods
 '''
 def dot(a:'Vector', b: 'Vector'):
     if not isinstance(b, Vector) or not isinstance(a, Vector):
-        raise TypeError("Operand is not a vector.")
+        raise TypeError("Dot product is only defined between vectors.")
     if len(a) != len(b):
         raise ValueError("Vectors of mismatched size.")
     sum = 0

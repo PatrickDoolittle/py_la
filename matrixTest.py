@@ -170,13 +170,39 @@ try:
 except AssertionError:
     raise Exception("Matrix row reduction failed.  Check your code.")
 
+try: 
+    m_1 = Matrix([Vector([6,5,3]), Vector([12,14,8]), Vector([18,31,18])])
+    m_2 = m_1.reduce()
+    assert m_2 == Matrix([Vector([1,0,0]), Vector([0,1,0]), Vector([0,0,1])])
+    print("Paseed")
+except AssertionError:
+    raise Exception("Matrix row reduction failed.  Check your code.")
+
 # Matrix row echelon test
 print("Matrix row echelon test.")
 try:
     m_1 = Matrix([Vector([0,8,0]), Vector([0,9,17]), Vector([1,2,9])])
     m_2 = m_1.reduce(echelon=True)
-    print(m_2)
     assert m_2 == Matrix([Vector([8,0,0]), Vector([9,17,0]), Vector([2,9,1])])
+    print("Passed")
+except AssertionError:
+    raise Exception("Matrix row echelon failed.  Check your code.")
+
+# Test row echelon with matrix that has zero rows at beginning
+try:
+    m_1 = Matrix([Vector([0,0,0]), Vector([0,9,17]), Vector([1,2,9])], transpose=True)
+    m_2 = m_1.reduce(echelon=True)
+    assert m_2.transpose() == Matrix([Vector([1,2,9]), Vector([0,9,17]), Vector([0,0,0])])
+    print("Passed")
+except AssertionError:
+    raise Exception("Matrix row echelon failed.  Check your code.")
+
+# Test row echelon with matrix that has every element filled
+try:
+    m_1 = Matrix([Vector([6,5,3]), Vector([12,14,8]), Vector([18,31,18])])
+    m_2 = m_1.reduce(echelon=True)
+    print(m_2)
+    assert m_2 == Matrix([Vector([6,0,0]), Vector([12,4,0]), Vector([18,16,1])])
     print("Passed")
 except AssertionError:
     raise Exception("Matrix row echelon failed.  Check your code.")
@@ -192,6 +218,20 @@ try:
     print("Passed")
 except AssertionError:
     raise Exception("Augmented Matrix row reduction failed.  Check your code.")
+
+# Lower Upper Decomposition test
+print("Lower Upper Decomposition test.")
+try:   
+    m_1 = Matrix([Vector([1,4,3]), Vector([2,6,7]), Vector([3,9,1])])
+    print(m_1)
+    m_2, m_3 = m_1.LU()
+    print(m_2)
+    print(m_3)
+    print(m_2 @ m_3)
+    assert m_2 @ m_3 == m_1
+    print("Passed")
+except AssertionError:
+    raise Exception("LU decomposition failed.  Check your code.")
 
 
 # Variable Size Identity Matrix Test
@@ -221,6 +261,7 @@ try:
     print("Passed")
 except AssertionError:
     print("Vector Assignment failed.  Check your code.")
+
 
 print("Printing string form of 3x3 Matrix")
 try:
