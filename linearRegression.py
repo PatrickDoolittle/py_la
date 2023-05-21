@@ -36,7 +36,6 @@ def linear_regression(data: List[tuple]):
     constant_column = [1 for i in range(len(data))]
     constant_vector = Vector(constant_column)
     design_matrix = Matrix([constant_vector, independent_vector])
-    print("Design matrix: " + str(design_matrix))
     if design_matrix.rank() != len(design_matrix):
         raise ValueError("Design matrix is not full rank.")
     # We know that the vector of linear coffiecients beta = (X^T X)^-1 X^T y

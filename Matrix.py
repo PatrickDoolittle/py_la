@@ -117,7 +117,7 @@ class Matrix:
             new_vectors.append(Vector(row))
         return Matrix(new_vectors)
      
-    def reduce(self: "Matrix", echelon=False, augmented=False, augment=None, LU=False):
+    def reduce(self: "Matrix", echelon=False, augmented=False, augment=None, factorize=False):
 
         # Perform a row reduction, possibly augmented, possibly to echelon form
         row_matrix = self.transpose()
@@ -176,7 +176,7 @@ class Matrix:
                 else:
                     scale_factor = row_matrix[reduce_row][pivot_column]
                 row_matrix[reduce_row] = row_matrix[reduce_row] - row_matrix[pivot_column].scale(scale_factor)
-                if augmented and LU:
+                if augmented and factorize:
                     augmented_rows[reduce_row][pivot_column] = augmented_rows[reduce_row][pivot_column] + augmented_rows[pivot_column][pivot_column]*scale_factor
                 elif augmented:
                     augmented_rows[reduce_row] = augmented_rows[reduce_row] - augmented_rows[pivot_column].scale(scale_factor)
@@ -225,7 +225,7 @@ class Matrix:
         if len(self) != len(self[0]):
             raise ValueError("Matrix must be square to have an inverse")
         identity_matrix = Matrix.identity(len(self))
-        reduced_self, inverse = self.reduce(echelon=True, augmented=True, augment=identity_matrix, LU=True)
+        reduced_self, inverse = self.reduce(echelon=True, augmented=True, augment=identity_matrix, factorize=True)
         return inverse, reduced_self
 
     @classmethod
