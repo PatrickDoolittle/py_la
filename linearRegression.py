@@ -43,9 +43,9 @@ def pearson_correlation(x,y):
     if len(x) != len(y):
         raise ValueError("Vectors of mismatched size")
     x_bar = x.vector_mean()
-    x_bar_vector = Vector([x_bar for i in range(len(x))])
+    x_bar_vector = Vector([x_bar for _ in range(len(x))])
     y_bar = y.vector_mean()
-    y_bar_vector = Vector([y_bar for i in range(len(y))])
+    y_bar_vector = Vector([y_bar for _ in range(len(y))])
     x_centered = x - x_bar_vector
     y_centered = y - y_bar_vector
     return dot(x_centered, y_centered) / (x_centered.modulus() * y_centered.modulus())
