@@ -156,5 +156,16 @@ try:
 except AssertionError:
     raise Exception("Vector zero-vector failed.  Check your code.")
 
+# Vector Mean test
+print("Vector mean test.")
+try:
+    v_1 = Vector([1,2,3])
+    assert v_1.vector_mean() == 2
+    v_2 = Vector([1,10,100,1000])
+    assert v_2.vector_mean() == 277.75
+    print("Passed")
+except AssertionError:
+    raise Exception("Vector mean failed.  Check your code.")
+
 
 print("All tests passed!")

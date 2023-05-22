@@ -89,6 +89,9 @@ class Vector:
         for i in range(0,len(self)):
             mod += self[i]**2
         return math.sqrt(mod)
+
+    def vector_mean(self):
+        return sum(self.elements) / len(self.elements)
     
     @classmethod
     def zero(cls, size):
