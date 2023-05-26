@@ -2,7 +2,8 @@
 Unit test for checking the Vector Module Functionality
 '''
 
-from Vector import *
+from Matrix import *
+import math
 
 print("Testing Vector Module")
 

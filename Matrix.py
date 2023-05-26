@@ -239,3 +239,8 @@ class Matrix:
             columns.append(Vector(vector))
         return cls(columns)
 
+def vector_matrix(vector):
+    return Matrix([vector])
+
+def vector_transpose(vector):
+    return Matrix([Vector([i]) for i in vector])

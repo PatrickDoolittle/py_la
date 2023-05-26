@@ -280,5 +280,26 @@ try:
 except AssertionError:
     raise Exception("Rank failed.  Check your code.")
 
+# Vector Transpose Test
+print("Vector Transpose Test")
+try:
+    v_1 = Vector([1,2,3])
+    v_1T = vector_transpose(v_1)
+    print(v_1T)
+    assert v_1T[0][0] == 1
+    assert v_1T[1][0] == 2
+    assert v_1T[2][0] == 3
+    print("Passed")
+except AssertionError:
+    raise Exception("Vector Transpose failed.  Check your code.")
 
-print("All tests passed!")
+# Matrix Vector Test
+print("Matrix Vector Test")
+try:
+    v_1 = Vector([1,2,3])
+    v_1M = vector_matrix(v_1)
+    print(v_1M)
+    assert v_1M == Matrix([Vector([1,2,3])])
+    print("All tests passed!")
+except AssertionError:
+    raise Exception("Matrix Vector failed.  Check your code.")
