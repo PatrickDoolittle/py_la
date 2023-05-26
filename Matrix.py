@@ -132,7 +132,7 @@ class Matrix:
         if augmented:
             augmented_rows = augment.transpose()
             #Iterate over columns of row_matrix, finding the best pivot and swapping that row with the pivot row (pivot row = pivot column)
-        for pivot_column in range(len(row_matrix)):
+        for pivot_column in range(len(row_matrix[0])):
             # Skip zero rows (at the bottom)
             if row_matrix[pivot_column].is_zero():
                 continue

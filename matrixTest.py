@@ -270,4 +270,15 @@ try:
 except Exception:
     print("Printing failed.  Check your code.")
 
+# Matrix Rank Test
+print("Matrix Rank Test")
+try:
+    m_1 = Matrix([Vector([1,4,7]), Vector([2,5,8]), Vector([3,6,9])])
+    print(m_1.rank())
+    assert m_1.rank() == 2
+    print("Passed")
+except AssertionError:
+    raise Exception("Rank failed.  Check your code.")
+
+
 print("All tests passed!")

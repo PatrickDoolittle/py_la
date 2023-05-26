@@ -30,7 +30,7 @@ def orthogonal_projection(data: List[tuple]):
 
 def linear_regression(data: List[tuple]):
     design_matrix, dependent_vector = design(data)
-    if design_matrix.rank() != len(design_matrix):
+    if design_matrix.rank() < len(design_matrix):
         raise ValueError("Design matrix is not full rank.")
     # We know that the vector of linear coffiecients beta = (X^T X)^-1 X^T y
     gram_matrix = (design_matrix.transpose() @ design_matrix)
