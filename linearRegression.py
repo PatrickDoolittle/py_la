@@ -50,7 +50,10 @@ def pearson_correlation(x,y):
     y_centered = y - y_bar_vector
     return dot(x_centered, y_centered) / (x_centered.modulus() * y_centered.modulus())
 
-
+def moore_penrose(rectangular_matrix: Matrix):
+    gram_matrix = (rectangular_matrix.transpose() @ rectangular_matrix)
+    return gram_matrix.inverse() @ rectangular_matrix.transpose()
+    
 
 
 '''

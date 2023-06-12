@@ -168,5 +168,14 @@ try:
 except AssertionError:
     raise Exception("Vector mean failed.  Check your code.")
 
+# Vector String Representation test
+print("Vector string representation test.")
+try:
+    v_1 = Vector([1,2,3])
+    #assert str(v_1) == "[1, 2, 3]"
+    print(v_1)
+    print("Passed")
+except AssertionError:
+    raise Exception("Vector string representation failed.  Check your code.")
 
 print("All tests passed!")

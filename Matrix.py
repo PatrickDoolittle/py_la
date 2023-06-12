@@ -42,9 +42,9 @@ class Matrix:
             raise TypeError("Value must be a vector")
     
     def __str__(self):
-        print(f"{len(self[0])}x{len(self)} Matrix: ")
+        #print(f"{len(self[0])}x{len(self)} Matrix: ")
         row_self = self.transpose()
-        return "\n".join([str(x) for x in row_self.vectors])
+        return f"{len(self[0])}x{len(self)} Matrix:\n" + "\n".join([str(x) for x in row_self.vectors])
 
     def __add__(self, operand: "Matrix"):
         if not isinstance(operand, Matrix):
@@ -132,7 +132,7 @@ class Matrix:
         if augmented:
             augmented_rows = augment.transpose()
             #Iterate over columns of row_matrix, finding the best pivot and swapping that row with the pivot row (pivot row = pivot column)
-        for pivot_column in range(len(row_matrix[0])):
+        for pivot_column in range(len(row_matrix)):
             # Skip zero rows (at the bottom)
             if row_matrix[pivot_column].is_zero():
                 continue
@@ -158,7 +158,7 @@ class Matrix:
             # Now we know that row_matrix[pivot_row][pivot_column] has the best pivot, so we can scale it to 1
             scale_factor = row_matrix[pivot_column][pivot_column]
             if scale_factor != 0 or scale_factor != 1:
-                if not echelon:
+                if not echelon and scale_factor != 0:
                     row_matrix[pivot_column] = row_matrix[pivot_column].scale(1/scale_factor)
                     if augmented:
                         augmented_rows[pivot_column] = augmented_rows[pivot_column].scale(1/scale_factor)
@@ -227,6 +227,22 @@ class Matrix:
         identity_matrix = Matrix.identity(len(self))
         reduced_self, inverse = self.reduce(echelon=True, augmented=True, augment=identity_matrix, factorize=True)
         return inverse, reduced_self
+
+    def nullbasis(self):
+        #This is a function which takes the row reduced echelon form of the matrix, then finds a basis for the nullspace
+        reduced_self = self.reduce()
+        pivot_vectors = []
+        reduced_self_transpose = reduced_self.transpose()
+        for i in range(len(reduced_self)):
+            if reduced_self[i][i] == 1:
+                pivot_row = reduced_self_transpose[i]
+                #Find a vector which represents the pivot variable in terms of free variables
+                pivot_vector = [-i for pivot_row[i] in range(1,len(pivot_row))]
+
+        
+        
+          
+        
 
     @classmethod
     def identity(cls, size):

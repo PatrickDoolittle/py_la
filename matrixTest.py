@@ -303,3 +303,13 @@ try:
     print("All tests passed!")
 except AssertionError:
     raise Exception("Matrix Vector failed.  Check your code.")
+
+# Null Basis Test
+print("Nullspace Basis Test")
+m_5 = Matrix([Vector([1,2,-1]),Vector([3,6,-3]),Vector([3,9,3]),Vector([2,7,4])])
+print(m_5)
+reduced = m_5.reduce()
+reduced_tranpose = reduced.transpose() 
+print(reduced)
+parametric_lists = []
+for i in range(len(reduced)):
