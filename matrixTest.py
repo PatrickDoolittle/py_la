@@ -201,7 +201,6 @@ except AssertionError:
 try:
     m_1 = Matrix([Vector([6,5,3]), Vector([12,14,8]), Vector([18,31,18])])
     m_2 = m_1.reduce(echelon=True)
-    print(m_2)
     assert m_2 == Matrix([Vector([6,0,0]), Vector([12,4,0]), Vector([18,16,1])])
     print("Passed")
 except AssertionError:
@@ -223,11 +222,8 @@ except AssertionError:
 print("Lower Upper Decomposition test.")
 try:   
     m_1 = Matrix([Vector([1,4,3]), Vector([2,6,7]), Vector([3,9,1])])
-    print(m_1)
     m_2, m_3 = m_1.LU()
-    print(m_2)
-    print(m_3)
-    print(m_2 @ m_3)
+
     assert m_2 @ m_3 == m_1
     print("Passed")
 except AssertionError:
@@ -274,7 +270,6 @@ except Exception:
 print("Matrix Rank Test")
 try:
     m_1 = Matrix([Vector([1,4,7]), Vector([2,5,8]), Vector([3,6,9])])
-    print(m_1.rank())
     assert m_1.rank() == 2
     print("Passed")
 except AssertionError:
@@ -285,13 +280,13 @@ print("Vector Transpose Test")
 try:
     v_1 = Vector([1,2,3])
     v_1T = vector_transpose(v_1)
-    print(v_1T)
     assert v_1T[0][0] == 1
     assert v_1T[1][0] == 2
     assert v_1T[2][0] == 3
     print("Passed")
 except AssertionError:
     raise Exception("Vector Transpose failed.  Check your code.")
+
 
 # Matrix Vector Test
 print("Matrix Vector Test")
@@ -300,16 +295,20 @@ try:
     v_1M = vector_matrix(v_1)
     print(v_1M)
     assert v_1M == Matrix([Vector([1,2,3])])
-    print("All tests passed!")
 except AssertionError:
     raise Exception("Matrix Vector failed.  Check your code.")
 
 # Null Basis Test
 print("Nullspace Basis Test")
 m_5 = Matrix([Vector([1,2,-1]),Vector([3,6,-3]),Vector([3,9,3]),Vector([2,7,4])])
-print(m_5)
-reduced = m_5.reduce()
-reduced_tranpose = reduced.transpose() 
-print(reduced)
-parametric_lists = []
-for i in range(len(reduced)):
+print(m_5.nullbasis())
+print(m_5.nullbasis1())
+
+
+m_1 = Matrix([Vector([2,.5]),Vector([.5,2])])
+print(str(m_1) + '\n')
+vectors = [Vector([1,0]),Vector([0,1]),Vector([1,1]),Vector([1,-1]),Vector([2,1]),Vector([4,9])]
+for v in vectors:
+    print("Transforming " + str(v))
+    print(m_1 * v)
+    print()

@@ -37,6 +37,14 @@ class Vector:
         summand = [self[i] + operand[i] for i in range(len(self))]
         return Vector(summand)
     
+    def __pow__(self, operand):
+        if not isinstance(operand, float) and not isinstance(operand, int):
+            raise TypeError("Exponent must be an integer or a float")
+        if operand < 0:
+            raise ValueError("Exponent must be positive")
+        exponented = [self[i] ** operand for i in range(len(self))]
+        return Vector(exponented)
+    
     def __sub__(self, operand:"Vector"):
         if not isinstance(operand, Vector):
             raise TypeError("Operand in vector addition is not a vector.")
@@ -50,6 +58,12 @@ class Vector:
             return self.scale(operand)
         elif isinstance(operand, Vector):
             raise TypeError("Vector-vector multiplication is not defined.")
+        
+    def __truediv__(self, operand):
+        if isinstance(operand, float) or isinstance(operand, int):
+            return self.scale(1/operand)
+        elif isinstance(operand, Vector):
+            raise TypeError("Vector-vector division is not defined.")
 
     def __str__(self):
         return str(self.elements)

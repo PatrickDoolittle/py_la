@@ -104,3 +104,4 @@ def scale_vector(operand, scalar):
 
 
     return VectorScaling
+

@@ -78,6 +78,12 @@ class Matrix:
         else:
             raise TypeError("Operand must be a Vector or Scalar")
 
+    def __truediv__(self, operand):
+        if isinstance(operand, int) or isinstance(operand,float):
+            new_vectors = [self[i]/operand for i in range(len(self))]
+            return Matrix(new_vectors)
+        else:
+            raise TypeError("Divisor must be a Scalar")
 
     def __matmul__(self, operand:"Matrix"):
         if not isinstance(operand, Matrix):
@@ -195,6 +201,12 @@ class Matrix:
                 rank += 1
         return rank
     
+    def rank_value(self):
+        if len(self) > len(self[0]):
+            return len(self[0])
+        else:
+            return len(self)
+    
     def gramSchmidt(self):
         '''
         Returns the gram schmidt orthogonalization of the matrix A
@@ -229,21 +241,36 @@ class Matrix:
         return inverse, reduced_self
 
     def nullbasis(self):
-        #This is a function which takes the row reduced echelon form of the matrix, then finds a basis for the nullspace
-        reduced_self = self.reduce()
-        pivot_vectors = []
-        reduced_self_transpose = reduced_self.transpose()
-        for i in range(len(reduced_self)):
-            if reduced_self[i][i] == 1:
-                pivot_row = reduced_self_transpose[i]
-                #Find a vector which represents the pivot variable in terms of free variables
-                pivot_vector = [-i for pivot_row[i] in range(1,len(pivot_row))]
-
+        reduced = self.reduce()
+        reduced_transpose = reduced.transpose()
+        pivot_indices, free_indices, parametric_lists, null_vectors = [], [], [], []
+        NUM_VARIABLES = self.rank_value()
+        for i in range(len(reduced)):
+            if i >= NUM_VARIABLES or reduced[i][i] != 1:
+                free_indices.append(i)
+            else:
+                pivot_indices.append(i)
+        for pivot in pivot_indices:
+            parametric_list = []
+            for variable in free_indices:
+                parametric_list.append(-reduced_transpose[pivot][variable])
+            parametric_lists.append(parametric_list)
         
+        for free_variable in free_indices:
+            #We are going to create a null vector for each free variable 
+            null_vector = []
+            for variable in range(NUM_VARIABLES):
+                #We construct the null vector which has the same size as the number of of total variables
+                if variable in pivot_indices:
+                    null_vector.append(parametric_lists[pivot_indices.index(variable)][free_indices.index(free_variable)])
+                elif variable == free_variable:
+                    null_vector.append(1)
+                else:
+                    null_vector.append(0)
+            null_vectors.append(null_vector)
+    
+        return null_vectors
         
-          
-        
-
     @classmethod
     def identity(cls, size):
         if size < 1:
@@ -255,8 +282,11 @@ class Matrix:
             columns.append(Vector(vector))
         return cls(columns)
 
+
+
 def vector_matrix(vector):
     return Matrix([vector])
 
 def vector_transpose(vector):
     return Matrix([Vector([i]) for i in vector])
+
